@@ -84,3 +84,6 @@ The application we are working on uses the following tech stack:
 - Include elaborate details in the body of the commit message
 - Always follow the conventional commit message format
 - Add two newlines after the commit message title
+
+
+- Use English as the primary language for read-me, commits and comments
