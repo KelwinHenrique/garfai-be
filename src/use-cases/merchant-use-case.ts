@@ -4,21 +4,20 @@
  * Implements business logic for merchant operations
  */
 
-import { MerchantService } from '../services/merchant-service';
+import { MerchantRepository } from '../repositories/merchant-repository';
 import { Merchant, MerchantCreateInput, MerchantUpdateInput, merchantCreateSchema, merchantUpdateSchema } from '../models';
-import { ValidationError } from 'yup';
 
 /**
  * Merchant use case class
  */
 export class MerchantUseCase {
-  private merchantService: MerchantService;
+  private merchantRepository: MerchantRepository;
   
   /**
    * Creates a new MerchantUseCase instance
    */
   constructor() {
-    this.merchantService = new MerchantService();
+    this.merchantRepository = new MerchantRepository();
   }
   
   /**
@@ -33,7 +32,7 @@ export class MerchantUseCase {
     await merchantCreateSchema.validate(merchantData, { abortEarly: false });
     
     // Create merchant
-    return this.merchantService.createMerchant(merchantData);
+    return this.merchantRepository.create(merchantData);
   }
   
   /**
@@ -43,7 +42,7 @@ export class MerchantUseCase {
    * @returns Array of merchants
    */
   async getMerchants(active?: boolean): Promise<Merchant[]> {
-    return this.merchantService.getMerchants(active);
+    return this.merchantRepository.findAll(active);
   }
   
   /**
@@ -53,7 +52,7 @@ export class MerchantUseCase {
    * @returns The merchant or null if not found
    */
   async getMerchantById(id: string): Promise<Merchant | null> {
-    return this.merchantService.getMerchantById(id);
+    return this.merchantRepository.findById(id);
   }
   
   /**
@@ -63,7 +62,7 @@ export class MerchantUseCase {
    * @returns The merchant or null if not found
    */
   async getMerchantBySlug(slug: string): Promise<Merchant | null> {
-    return this.merchantService.getMerchantBySlug(slug);
+    return this.merchantRepository.findBySlug(slug);
   }
   
   /**
@@ -78,7 +77,7 @@ export class MerchantUseCase {
     await merchantUpdateSchema.validate(merchantData, { abortEarly: false });
     
     // Update merchant
-    const updatedMerchant = await this.merchantService.updateMerchant(merchantData);
+    const updatedMerchant = await this.merchantRepository.update(merchantData.id, merchantData);
     
     if (!updatedMerchant) {
       throw new Error(`Merchant with ID ${merchantData.id} not found`);
@@ -95,7 +94,7 @@ export class MerchantUseCase {
    * @throws Error if merchant not found
    */
   async deleteMerchant(id: string): Promise<boolean> {
-    const deleted = await this.merchantService.deleteMerchant(id);
+    const deleted = await this.merchantRepository.delete(id);
     
     if (!deleted) {
       throw new Error(`Merchant with ID ${id} not found`);
@@ -113,7 +112,7 @@ export class MerchantUseCase {
    * @throws Error if merchant not found
    */
   async toggleMerchantStatus(id: string, isActive: boolean): Promise<Merchant> {
-    const updatedMerchant = await this.merchantService.toggleMerchantStatus(id, isActive);
+    const updatedMerchant = await this.merchantRepository.updateActiveStatus(id, isActive);
     
     if (!updatedMerchant) {
       throw new Error(`Merchant with ID ${id} not found`);

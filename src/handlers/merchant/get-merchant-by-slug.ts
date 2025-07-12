@@ -4,7 +4,7 @@
 
 import { Request, Response } from 'express';
 import { ApiResponse } from '../../models';
-import { MerchantService } from '../../services/merchant-service';
+import { MerchantUseCase } from '../../use-cases/merchant-use-case';
 
 /**
  * Get merchant by slug handler
@@ -15,8 +15,8 @@ import { MerchantService } from '../../services/merchant-service';
 export const getMerchantBySlug = async (req: Request, res: Response): Promise<void> => {
   try {
     const slug = req.params.slug;
-    const merchantService = new MerchantService();
-    const merchant = await merchantService.getMerchantBySlug(slug);
+    const merchantUseCase = new MerchantUseCase();
+    const merchant = await merchantUseCase.getMerchantBySlug(slug);
     
     if (!merchant) {
       const response: ApiResponse = {

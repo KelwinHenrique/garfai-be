@@ -56,3 +56,4 @@ export const merchants = pgTable('merchants', {
   isActive: boolean('is_active').default(true).notNull(),
   ownerId: uuid('owner_id')
 });
+

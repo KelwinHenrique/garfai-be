@@ -4,7 +4,7 @@
 
 import { Request, Response } from 'express';
 import { ApiResponse } from '../../models';
-import { MerchantService } from '../../services/merchant-service';
+import { MerchantUseCase } from '../../use-cases/merchant-use-case';
 
 /**
  * Delete merchant handler
@@ -15,8 +15,8 @@ import { MerchantService } from '../../services/merchant-service';
 export const deleteMerchant = async (req: Request, res: Response): Promise<void> => {
   try {
     const merchantId = req.params.id;
-    const merchantService = new MerchantService();
-    const deleted = await merchantService.deleteMerchant(merchantId);
+    const merchantUseCase = new MerchantUseCase();
+    const deleted = await merchantUseCase.deleteMerchant(merchantId);
     
     if (!deleted) {
       const response: ApiResponse = {

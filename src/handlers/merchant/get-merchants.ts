@@ -4,7 +4,7 @@
 
 import { Request, Response } from 'express';
 import { ApiResponse } from '../../models';
-import { MerchantService } from '../../services/merchant-service';
+import { MerchantUseCase } from '../../use-cases/merchant-use-case';
 
 /**
  * Get all merchants handler
@@ -18,8 +18,8 @@ export const getMerchants = async (req: Request, res: Response): Promise<void> =
                   req.query.active === 'false' ? false : 
                   undefined;
     
-    const merchantService = new MerchantService();
-    const merchants = await merchantService.getMerchants(active);
+    const merchantUseCase = new MerchantUseCase();
+    const merchants = await merchantUseCase.getMerchants(active);
     
     const response: ApiResponse = {
       success: true,

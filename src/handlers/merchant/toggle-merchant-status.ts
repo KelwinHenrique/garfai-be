@@ -4,7 +4,7 @@
 
 import { Request, Response } from 'express';
 import { ApiResponse } from '../../models';
-import { MerchantService } from '../../services/merchant-service';
+import { MerchantUseCase } from '../../use-cases/merchant-use-case';
 
 /**
  * Toggle merchant active status handler
@@ -28,8 +28,8 @@ export const toggleMerchantStatus = async (req: Request, res: Response): Promise
       return;
     }
     
-    const merchantService = new MerchantService();
-    const updatedMerchant = await merchantService.toggleMerchantStatus(merchantId, isActive);
+    const merchantUseCase = new MerchantUseCase();
+    const updatedMerchant = await merchantUseCase.toggleMerchantStatus(merchantId, isActive);
     
     if (!updatedMerchant) {
       const response: ApiResponse = {

@@ -1,27 +1,27 @@
 /**
- * Merchant service
+ * Merchant repository
  * 
- * Handles business logic for merchant operations
+ * Handles database operations for merchant entities
  */
 
 import { v4 as uuidv4 } from 'uuid';
-import { Merchant, MerchantCreateInput, MerchantUpdateInput } from '../models';
-import { slugify } from '../utils';
+import { eq } from 'drizzle-orm';
 import { db } from '../config/database';
 import { merchants } from '../models/schema';
-import { eq } from 'drizzle-orm';
+import { Merchant, MerchantCreateInput, MerchantUpdateInput } from '../models';
+import { slugify } from '../utils';
 
 /**
- * Merchant service class
+ * Merchant repository class
  */
-export class MerchantService {
+export class MerchantRepository {
   /**
-   * Create a new merchant
+   * Create a new merchant in the database
    * 
    * @param merchantData - Merchant creation data
    * @returns The created merchant
    */
-  async createMerchant(merchantData: MerchantCreateInput): Promise<Merchant> {
+  async create(merchantData: MerchantCreateInput): Promise<Merchant> {
     const now = new Date();
     
     // Convert minDeliveryPrice to string for database compatibility
@@ -52,12 +52,12 @@ export class MerchantService {
   }
   
   /**
-   * Get all merchants
+   * Get all merchants from the database
    * 
    * @param active - If provided, filters merchants by active status
    * @returns Array of merchants
    */
-  async getMerchants(active?: boolean): Promise<Merchant[]> {
+  async findAll(active?: boolean): Promise<Merchant[]> {
     if (active !== undefined) {
       return db.select().from(merchants).where(eq(merchants.isActive, active)) as unknown as Promise<Merchant[]>;
     }
@@ -65,47 +65,41 @@ export class MerchantService {
   }
   
   /**
-   * Get a merchant by ID
+   * Get a merchant by ID from the database
    * 
    * @param id - Merchant ID
    * @returns The merchant or null if not found
    */
-  async getMerchantById(id: string): Promise<Merchant | null> {
+  async findById(id: string): Promise<Merchant | null> {
     const results = await db.select().from(merchants).where(eq(merchants.id, id)).limit(1);
     return results.length > 0 ? results[0] as unknown as Merchant : null;
   }
   
   /**
-   * Get a merchant by slug
+   * Get a merchant by slug from the database
    * 
    * @param slug - Merchant slug
    * @returns The merchant or null if not found
    */
-  async getMerchantBySlug(slug: string): Promise<Merchant | null> {
+  async findBySlug(slug: string): Promise<Merchant | null> {
     const results = await db.select().from(merchants).where(eq(merchants.slug, slug)).limit(1);
     return results.length > 0 ? results[0] as unknown as Merchant : null;
   }
   
   /**
-   * Update a merchant
+   * Update a merchant in the database
    * 
+   * @param id - Merchant ID
    * @param merchantData - Merchant update data
    * @returns The updated merchant or null if not found
    */
-  async updateMerchant(merchantData: MerchantUpdateInput): Promise<Merchant | null> {
-    // Check if merchant exists
-    const existingMerchant = await this.getMerchantById(merchantData.id);
-    
-    if (!existingMerchant) {
-      return null;
-    }
-    
+  async update(id: string, merchantData: Partial<Omit<Merchant, 'id' | 'createdAt'>>): Promise<Merchant | null> {
     // Generate new slug if name is updated
-    const slug = merchantData.name ? slugify(merchantData.name) : existingMerchant.slug;
+    const slug = merchantData.name ? slugify(merchantData.name) : undefined;
     
     const updateValues: any = {
       ...merchantData,
-      slug,
+      ...(slug && { slug }),
       updatedAt: new Date()
     };
     
@@ -114,37 +108,34 @@ export class MerchantService {
       updateValues.minDeliveryPrice = String(updateValues.minDeliveryPrice);
     }
     
-    // Remove id from update values
-    delete updateValues.id;
-    
     const [updatedMerchant] = await db
       .update(merchants)
       .set(updateValues)
-      .where(eq(merchants.id, merchantData.id))
+      .where(eq(merchants.id, id))
       .returning();
     
-    return updatedMerchant as unknown as Merchant;
+    return updatedMerchant ? (updatedMerchant as unknown as Merchant) : null;
   }
   
   /**
-   * Delete a merchant
+   * Delete a merchant from the database
    * 
    * @param id - Merchant ID
    * @returns True if deleted, false if not found
    */
-  async deleteMerchant(id: string): Promise<boolean> {
+  async delete(id: string): Promise<boolean> {
     const result = await db.delete(merchants).where(eq(merchants.id, id)).returning({ id: merchants.id });
     return result.length > 0;
   }
   
   /**
-   * Toggle merchant active status
+   * Update merchant active status in the database
    * 
    * @param id - Merchant ID
    * @param isActive - New active status
    * @returns The updated merchant or null if not found
    */
-  async toggleMerchantStatus(id: string, isActive: boolean): Promise<Merchant | null> {
+  async updateActiveStatus(id: string, isActive: boolean): Promise<Merchant | null> {
     const [updatedMerchant] = await db
       .update(merchants)
       .set({ isActive, updatedAt: new Date() })

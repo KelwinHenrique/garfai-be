@@ -4,7 +4,7 @@
 
 import { Request, Response } from 'express';
 import { ApiResponse } from '../../models';
-import { MerchantService } from '../../services/merchant-service';
+import { MerchantUseCase } from '../../use-cases/merchant-use-case';
 
 /**
  * Get merchant by ID handler
@@ -15,8 +15,8 @@ import { MerchantService } from '../../services/merchant-service';
 export const getMerchantById = async (req: Request, res: Response): Promise<void> => {
   try {
     const merchantId = req.params.id;
-    const merchantService = new MerchantService();
-    const merchant = await merchantService.getMerchantById(merchantId);
+    const merchantUseCase = new MerchantUseCase();
+    const merchant = await merchantUseCase.getMerchantById(merchantId);
     
     if (!merchant) {
       const response: ApiResponse = {

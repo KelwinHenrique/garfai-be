@@ -6,7 +6,7 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { AUTH_CONFIG } from '../config/app-config';
-import { UserService } from '../services';
+import { UserService } from '../services/user-service';
 
 /**
  * User profile from Google OAuth
