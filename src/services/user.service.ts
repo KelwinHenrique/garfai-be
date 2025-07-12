@@ -5,8 +5,8 @@
  */
 import { GoogleUserProfile } from '../auth/passport-config';
 import { UserRepository } from '../repositories/users.repository';
-import { User } from '../schemas/users.schema';
-import { UserCreateInput, ELoginStrategy } from '../models';
+import { NewUser, User } from '../schemas/users.schema';
+import { ELoginStrategy } from '../models';
 
 /**
  * Service for handling user operations
@@ -32,7 +32,7 @@ export class UserService {
       }
 
       // Create new user from Google profile
-      const userData: UserCreateInput = {
+      const userData: NewUser = {
         email: profile.email,
         name: profile.displayName,
         password: null, // No password for OAuth users
@@ -128,7 +128,7 @@ export class UserService {
    * @param userData - User creation data
    * @returns Created user
    */
-  public static async createUser(userData: UserCreateInput): Promise<User> {
+  public static async createUser(userData: NewUser): Promise<User> {
     try {
       return await this.userRepository.create(userData);
     } catch (error) {

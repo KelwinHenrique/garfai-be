@@ -10,7 +10,7 @@ import {
 import { relations } from 'drizzle-orm'
 import timestamps from './utils/timestamps'
 import { EAccessRole } from '../models/userAccess'
-import { merchants } from './merchants.schema'
+import { merchants } from './merchant.schema'
 import { users } from './users.schema'
 
 export const userAccessRoleEnum = pgEnum('user_access_role', EAccessRole)

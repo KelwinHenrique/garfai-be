@@ -6,8 +6,8 @@
 
 import { eq } from 'drizzle-orm';
 import { db } from '../config/database';
-import { users, User } from '../schemas/users.schema';
-import { UserCreateInput, ELoginStrategy } from '../models';
+import { users, User, NewUser } from '../schemas/users.schema';
+import { ELoginStrategy } from '../models';
 
 /**
  * User repository class
@@ -19,7 +19,7 @@ export class UserRepository {
    * @param userData - User creation data
    * @returns The created user
    */
-  async create(userData: UserCreateInput): Promise<User> {
+  async create(userData: NewUser): Promise<User> {
     const now = new Date();
     
     const userToInsert = {

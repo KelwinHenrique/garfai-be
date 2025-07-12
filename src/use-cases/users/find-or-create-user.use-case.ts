@@ -1,5 +1,5 @@
 import { GoogleUserProfile } from "../../auth";
-import { ELoginStrategy, UserCreateInput } from "../../models";
+import { ELoginStrategy } from "../../models";
 import { UserRepository } from "../../repositories";
 import { NewUser, User } from "../../schemas/users.schema";
 
