@@ -1,30 +1,25 @@
 /**
  * Main application entry point for GarfAI Backend
  * 
- * This file sets up the Express server with a basic hello world route.
+ * This file sets up the Express server and configures middleware and routes.
  */
-import express, { Request, Response } from 'express';
+import express from 'express';
+import { SERVER_CONFIG } from './config/app-config';
+import { initRoutes } from './handlers';
+import { errorHandler } from './utils';
 
 // Initialize express app
 const app = express();
-const PORT = process.env.PORT || 3000;
+const { PORT } = SERVER_CONFIG;
 
 // Middleware for parsing JSON
 app.use(express.json());
 
-/**
- * Hello world route
- * 
- * @param req - Express request object
- * @param res - Express response object
- * @returns Response with hello world message
- */
-app.get('/', (req: Request, res: Response) => {
-  return res.json({
-    message: 'Hello World from GarfAI Backend!',
-    timestamp: new Date().toISOString()
-  });
-});
+// Initialize routes
+app.use(initRoutes());
+
+// Global error handler
+app.use(errorHandler);
 
 // Start the server
 app.listen(PORT, () => {
