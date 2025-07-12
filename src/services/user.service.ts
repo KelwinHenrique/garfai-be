@@ -13,40 +13,6 @@ import { ELoginStrategy } from '../models';
  */
 export class UserService {
   private static userRepository = new UserRepository();
-
-  /**
-   * Find or create a user from Google profile
-   * 
-   * @param profile - Google user profile
-   * @returns User object
-   */
-  public static async findOrCreateFromGoogle(profile: GoogleUserProfile): Promise<User> {
-    try {
-      // Check if user already exists by email
-      const existingUser = await this.userRepository.findByEmail(profile.email);
-
-      if (existingUser) {
-        // Update last login for existing user
-        const updatedUser = await this.userRepository.updateLastLogin(existingUser.id);
-        return updatedUser || existingUser;
-      }
-
-      // Create new user from Google profile
-      const userData: NewUser = {
-        email: profile.email,
-        name: profile.displayName,
-        password: null, // No password for OAuth users
-        loginStrategy: ELoginStrategy.GOOGLE
-      };
-
-      const newUser = await this.userRepository.create(userData);
-      return newUser;
-    } catch (error) {
-      console.error('Error in findOrCreateFromGoogle:', error);
-      throw new Error('Failed to find or create user from Google profile');
-    }
-  }
-
   /**
    * Get user by ID
    * 

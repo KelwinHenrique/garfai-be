@@ -5,4 +5,5 @@
 export * from './MerchantRepository';
 export * from './ClientRepository';
 export * from './ClientAddressRepository';
+export * from './users.repository';
 
