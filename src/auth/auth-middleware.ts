@@ -22,21 +22,3 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
     message: 'Authentication required' 
   });
 };
-
-/**
- * Middleware to check if user is not authenticated
- * 
- * @param req - Express request object
- * @param res - Express response object
- * @param next - Express next function
- */
-export const isNotAuthenticated = (req: Request, res: Response, next: NextFunction): void => {
-  if (!req.isAuthenticated()) {
-    return next();
-  }
-  
-  res.status(400).json({ 
-    success: false, 
-    message: 'Already authenticated' 
-  });
-};
