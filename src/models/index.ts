@@ -29,20 +29,4 @@ export {
   merchantCoordinatesSchema,
   PriceRange as MerchantPriceRange
 } from './merchant';
-
-// Re-export common models from merchant (these are shared between merchant and store)
 export { BusinessHours, DayHours, businessHoursSchema, dayHoursSchema } from './merchant';
-
-// Re-export store models (deprecated)
-export {
-  Store,
-  StoreAddress,
-  StoreCoordinates,
-  StoreCreateInput,
-  StoreUpdateInput,
-  storeCreateSchema,
-  storeUpdateSchema,
-  storeAddressSchema,
-  storeCoordinatesSchema,
-  PriceRange
-} from './store';
