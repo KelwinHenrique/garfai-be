@@ -9,6 +9,7 @@ import { merchantRouter } from './merchant';
 import { isAuthenticated } from '../auth/auth-middleware';
 import clientRouter from './client/router';
 import menuRouter from './menu/router';
+import flowsRouter from './flows/router';
 
 /**
  * Initialize API routes
@@ -29,6 +30,9 @@ export const initRoutes = (): Router => {
 
   // Menu routes
   router.use('/menu', menuRouter);
+  
+  // Flows routes
+  router.use('/flows', flowsRouter);
   
   return router;
 };
