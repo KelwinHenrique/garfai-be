@@ -9,7 +9,7 @@ import {
 } from 'drizzle-orm/pg-core'
 import { menuCategories } from './menuCategories.schema'
 import timestamps from './utils/timestamps'
-import { merchants } from './merchants.schema'
+import { environments } from './environments.schema'
 import { relations } from 'drizzle-orm'
 import { productInfo } from './productInfo.schema'
 import { choices } from './choices.schema'
@@ -36,7 +36,7 @@ export const dishClassificationEnum = pgEnum(
 export const items = pgTable('items', {
   id: uuid('id').primaryKey().defaultRandom(),
   environmentId: uuid('environment_id')
-    .references(() => merchants.id, { onDelete: 'cascade' })
+    .references(() => environments.id, { onDelete: 'cascade' })
     .notNull(),
   menuCategoryId: uuid('menu_category_id')
     .references(() => menuCategories.id, { onDelete: 'cascade' })

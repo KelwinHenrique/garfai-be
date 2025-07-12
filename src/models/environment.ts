@@ -1,11 +1,11 @@
 /**
- * Merchant model definitions
+ * Environment model definitions
  */
 
 import * as yup from 'yup';
 
 /**
- * Price range enum for merchants
+ * Price range enum for environments
  */
 export enum PriceRange {
   LOW = 'LOW',
@@ -15,9 +15,9 @@ export enum PriceRange {
 }
 
 /**
- * Merchant coordinates type
+ * Environment coordinates type
  */
-export interface MerchantCoordinates {
+export interface EnvironmentCoordinates {
   /** Latitude coordinate */
   latitude: number;
   /** Longitude coordinate */
@@ -25,9 +25,9 @@ export interface MerchantCoordinates {
 }
 
 /**
- * Merchant address type
+ * Environment address type
  */
-export interface MerchantAddress {
+export interface EnvironmentAddress {
   /** Street name */
   street: string;
   /** Building number */
@@ -43,7 +43,7 @@ export interface MerchantAddress {
   /** Postal/ZIP code */
   zipCode: string;
   /** Geographic coordinates */
-  coordinates?: MerchantCoordinates;
+  coordinates?: EnvironmentCoordinates;
 }
 
 /**
@@ -77,16 +77,16 @@ export interface BusinessHours {
 }
 
 /**
- * Merchant model interface
+ * Environment model interface
  */
-export interface Merchant {
+export interface Environment {
   /** Unique identifier */
   id: string;
-  /** Merchant name */
+  /** Environment name */
   name: string;
   /** URL-friendly version of name */
   slug: string;
-  /** Merchant description */
+  /** Environment description */
   description: string;
   /** Logo image URL */
   logo?: string | null;
@@ -99,7 +99,7 @@ export interface Merchant {
   /** Website URL (optional) */
   website?: string | null;
   /** Physical address */
-  address: MerchantAddress | Record<string, unknown>;
+  address: EnvironmentAddress | Record<string, unknown>;
   /** Operating hours */
   businessHours: BusinessHours | Record<string, unknown>;
   /** Food categories/cuisines */
@@ -120,34 +120,34 @@ export interface Merchant {
   createdAt: Date;
   /** Last update timestamp */
   updatedAt: Date;
-  /** Whether the merchant is currently active */
+  /** Whether the environment is currently active */
   isActive: boolean;
-  /** ID of merchant owner/admin */
+  /** ID of environment owner/admin */
   ownerId?: string | null;
 }
 
 /**
- * Merchant creation input type (omits auto-generated fields)
+ * Environment creation input type (omits auto-generated fields)
  */
-export type MerchantCreateInput = Omit<Merchant, 'id' | 'slug' | 'rating' | 'reviewCount' | 'createdAt' | 'updatedAt' | 'isActive'>;
+export type EnvironmentCreateInput = Omit<Environment, 'id' | 'slug' | 'rating' | 'reviewCount' | 'createdAt' | 'updatedAt' | 'isActive'>;
 
 /**
- * Merchant update input type (all fields optional except id)
+ * Environment update input type (all fields optional except id)
  */
-export type MerchantUpdateInput = Partial<Omit<Merchant, 'id' | 'createdAt'>> & { id: string };
+export type EnvironmentUpdateInput = Partial<Omit<Environment, 'id' | 'createdAt'>> & { id: string };
 
 /**
- * Validation schema for merchant coordinates
+ * Validation schema for environment coordinates
  */
-export const merchantCoordinatesSchema = yup.object({
+export const environmentCoordinatesSchema = yup.object({
   latitude: yup.number().required('Latitude is required'),
   longitude: yup.number().required('Longitude is required')
 });
 
 /**
- * Validation schema for merchant address
+ * Validation schema for environment address
  */
-export const merchantAddressSchema = yup.object({
+export const environmentAddressSchema = yup.object({
   street: yup.string().required('Street is required'),
   number: yup.string().required('Number is required'),
   complement: yup.string(),
@@ -155,7 +155,7 @@ export const merchantAddressSchema = yup.object({
   city: yup.string().required('City is required'),
   state: yup.string().required('State is required'),
   zipCode: yup.string().required('ZIP code is required'),
-  coordinates: merchantCoordinatesSchema
+  coordinates: environmentCoordinatesSchema
 });
 
 /**
@@ -180,9 +180,9 @@ export const businessHoursSchema = yup.object({
 });
 
 /**
- * Validation schema for merchant creation
+ * Validation schema for environment creation
  */
-export const merchantCreateSchema = yup.object({
+export const environmentCreateSchema = yup.object({
   name: yup.string().required('Name is required'),
   description: yup.string().required('Description is required'),
   logo: yup.string().url('Logo must be a valid URL'),
@@ -190,7 +190,7 @@ export const merchantCreateSchema = yup.object({
   email: yup.string().email('Invalid email').required('Email is required'),
   phone: yup.string().required('Phone is required'),
   website: yup.string().url('Website must be a valid URL'),
-  address: merchantAddressSchema.required('Address is required'),
+  address: environmentAddressSchema.required('Address is required'),
   businessHours: businessHoursSchema.required('Business hours are required'),
   categories: yup.array().of(yup.string()).min(1, 'At least one category is required').required('Categories are required'),
   priceRange: yup.mixed<PriceRange>().oneOf(Object.values(PriceRange), 'Invalid price range').required('Price range is required'),
@@ -201,10 +201,10 @@ export const merchantCreateSchema = yup.object({
 });
 
 /**
- * Validation schema for merchant updates
+ * Validation schema for environment updates
  */
-export const merchantUpdateSchema = yup.object({
-  id: yup.string().required('Merchant ID is required'),
+export const environmentUpdateSchema = yup.object({
+  id: yup.string().required('Environment ID is required'),
   name: yup.string(),
   description: yup.string(),
   logo: yup.string().url('Logo must be a valid URL'),
@@ -212,7 +212,7 @@ export const merchantUpdateSchema = yup.object({
   email: yup.string().email('Invalid email'),
   phone: yup.string(),
   website: yup.string().url('Website must be a valid URL'),
-  address: merchantAddressSchema,
+  address: environmentAddressSchema,
   businessHours: businessHoursSchema,
   categories: yup.array().of(yup.string()).min(1, 'At least one category is required'),
   priceRange: yup.mixed<PriceRange>().oneOf(Object.values(PriceRange), 'Invalid price range'),

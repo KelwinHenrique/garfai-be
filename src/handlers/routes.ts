@@ -5,7 +5,7 @@
  */
 import { Router } from 'express';
 import { authRouter } from './auth';
-import { merchantRouter } from './merchant';
+import { environmentRouter } from './environment/router';
 import { isAuthenticated } from '../auth/auth-middleware';
 import clientRouter from './client/router';
 import menuRouter from './menu/router';
@@ -22,15 +22,15 @@ export const initRoutes = (): Router => {
   // Authentication routes
   router.use('/auth', authRouter());
   
-  // Merchant routes
-  router.use('/merchants', merchantRouter());
+  // Environment routes
+  router.use('/environments', environmentRouter());
 
   // Client routes
   router.use('/clients', clientRouter);
 
   // Menu routes
   router.use('/menu', menuRouter);
-  
+
   // Flows routes
   router.use('/flows', flowsRouter);
   

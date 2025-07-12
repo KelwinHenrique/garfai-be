@@ -1,27 +1,26 @@
 /**
- * Get merchant by ID handler
+ * Get environment by ID handler
  */
 
 import { Request, Response } from 'express';
 import { ApiResponse } from '../../models';
-import { MerchantUseCase } from '../../use-cases/merchant/merchant-use-case';
+import { getEnvironmentById } from '../../use-cases/environments/get-environment-by-id';
 
 /**
- * Get merchant by ID handler
+ * Get environment by ID handler
  * 
  * @param req - Express request object
  * @param res - Express response object
  */
-export const getMerchantById = async (req: Request, res: Response): Promise<void> => {
+export const getEnvironmentByIdHandler = async (req: Request, res: Response): Promise<void> => {
   try {
-    const merchantId = req.params.id;
-    const merchantUseCase = new MerchantUseCase();
-    const merchant = await merchantUseCase.getMerchantById(merchantId);
+    const environmentId = req.params.id;
+    const environment = await getEnvironmentById(environmentId);
     
-    if (!merchant) {
+    if (!environment) {
       const response: ApiResponse = {
         success: false,
-        error: 'Merchant not found',
+        error: 'Environment not found',
         timestamp: new Date().toISOString()
       };
       res.status(404).json(response);
@@ -30,7 +29,7 @@ export const getMerchantById = async (req: Request, res: Response): Promise<void
     
     const response: ApiResponse = {
       success: true,
-      data: merchant,
+      data: environment,
       timestamp: new Date().toISOString()
     };
     
@@ -38,7 +37,7 @@ export const getMerchantById = async (req: Request, res: Response): Promise<void
   } catch (error) {
     const response: ApiResponse = {
       success: false,
-      error: `Error retrieving merchant: ${(error as Error).message}`,
+      error: `Error retrieving environment: ${(error as Error).message}`,
       timestamp: new Date().toISOString()
     };
     res.status(500).json(response);

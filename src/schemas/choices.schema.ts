@@ -1,4 +1,3 @@
-// db/schemas/choices.ts
 import {
   pgTable,
   uuid,
@@ -9,23 +8,23 @@ import {
 } from 'drizzle-orm/pg-core'
 import { items } from './items.schema'
 import timestamps from './utils/timestamps'
-import { merchants } from './merchants.schema'
+import { environments } from './environments.schema'
 import { relations } from 'drizzle-orm'
 import { garnishItems } from './garnishItems.schema'
 export const choices = pgTable('choices', {
   id: uuid('id').primaryKey().defaultRandom(),
   environmentId: uuid('environment_id')
-    .references(() => merchants.id, { onDelete: 'cascade' })
+    .references(() => environments.id, { onDelete: 'cascade' })
     .notNull(),
   itemId: uuid('item_id')
-    .references(() => items.id, { onDelete: 'cascade' }) // CASCADE DELETE
+    .references(() => items.id, { onDelete: 'cascade' }) 
     .notNull(),
-  ifoodChoiceCode: text('ifood_choice_code'), // Código da choice no iFood
-  name: varchar('name', { length: 255 }).notNull(), // Nome da choice (ex: "Escolha o Refrigerante")
-  min: integer('min').notNull(), // 'min' do iFood
-  max: integer('max').notNull(), // 'max' do iFood
+  ifoodChoiceCode: text('ifood_choice_code'),
+  name: varchar('name', { length: 255 }).notNull(),
+  min: integer('min').notNull(),
+  max: integer('max').notNull(),
   displayOrder: integer('display_order').notNull(),
-  isActive: boolean('is_active').default(true).notNull(), // NOVO
+  isActive: boolean('is_active').default(true).notNull(),
   ...timestamps,
 })
 

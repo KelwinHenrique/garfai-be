@@ -16,20 +16,6 @@ export interface ApiResponse<T = unknown> {
   timestamp: string;
 }
 
-// Re-export merchant models
-export {
-  Merchant,
-  MerchantAddress,
-  MerchantCoordinates,
-  MerchantCreateInput,
-  MerchantUpdateInput,
-  merchantCreateSchema,
-  merchantUpdateSchema,
-  merchantAddressSchema,
-  merchantCoordinatesSchema,
-  PriceRange as MerchantPriceRange
-} from './merchant';
-export { BusinessHours, DayHours, businessHoursSchema, dayHoursSchema } from './merchant';
 
 // Re-export user models
 export {

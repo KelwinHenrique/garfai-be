@@ -8,7 +8,7 @@ import {
   varchar,
   pgEnum,
 } from 'drizzle-orm/pg-core'
-import { merchants } from './merchants.schema'
+import { environments } from './environments.schema'
 import timestamps from './utils/timestamps'
 import { relations } from 'drizzle-orm'
 import { menuCategories } from './menuCategories.schema'
@@ -19,7 +19,7 @@ export const menuStatusEnum = pgEnum('menuStatusEnum', EImportMenuStatus)
 export const menus = pgTable('menus', {
   id: uuid('id').primaryKey().defaultRandom(),
   environmentId: uuid('environment_id')
-    .references(() => merchants.id, { onDelete: 'cascade' })
+    .references(() => environments.id, { onDelete: 'cascade' })
     .notNull(),
   ifoodMerchantId: text('ifood_merchant_id'),
   rawCatalogData: jsonb('raw_catalog_data'),
@@ -33,9 +33,9 @@ export const menus = pgTable('menus', {
 })
 
 export const menusRelations = relations(menus, ({ one, many }) => ({
-  environment: one(merchants, {
+  environment: one(environments, {
     fields: [menus.environmentId],
-    references: [merchants.id],
+    references: [environments.id],
   }),
   menuCategories: many(menuCategories),
 }))

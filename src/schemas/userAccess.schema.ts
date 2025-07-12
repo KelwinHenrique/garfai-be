@@ -10,7 +10,7 @@ import {
 import { relations } from 'drizzle-orm'
 import timestamps from './utils/timestamps'
 import { EAccessRole } from '../models/userAccess'
-import { merchants } from './merchants.schema'
+import { environments } from './environments.schema'
 import { users } from './users.schema'
 
 export const userAccessRoleEnum = pgEnum('user_access_role', EAccessRole)
@@ -21,9 +21,9 @@ export const userAccess = pgTable('user_access', {
   userId: uuid('user_id')
     .notNull()
     .references(() => users.id),
-  merchantId: uuid('merchant_id')
+  environmentId: uuid('environment_id')
     .notNull()
-    .references(() => merchants.id, { onDelete: 'cascade' }),
+    .references(() => environments.id, { onDelete: 'cascade' }),
 
   role: userAccessRoleEnum('role').notNull(),
   isActive: boolean('is_active').notNull().default(true),
@@ -31,14 +31,14 @@ export const userAccess = pgTable('user_access', {
   ...timestamps, // createdAt, updatedAt
 })
 
-export const userAccessRelations = relations(userAccess, ({ one, many }) => ({
+export const userAccessRelations = relations(userAccess, ({ one }) => ({
   user: one(users, {
     fields: [userAccess.userId],
     references: [users.id],
   }),
-  merchant: one(merchants, {
-    fields: [userAccess.merchantId],
-    references: [merchants.id],
+  environment: one(environments, {
+    fields: [userAccess.environmentId],
+    references: [environments.id],
   }),
 }))
 

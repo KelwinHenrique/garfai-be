@@ -2,7 +2,7 @@
  * Repository exports
  */
 
-export * from './MerchantRepository';
+export * from './EnvironmentRepository';
 export * from './ClientRepository';
 export * from './ClientAddressRepository';
 export * from './users.repository';

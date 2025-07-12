@@ -1,22 +1,21 @@
 /**
- * Create merchant handler
+ * Create environment handler
  */
 
 import { Request, Response } from 'express';
 import { ApiResponse } from '../../models';
-import { MerchantUseCase } from '../../use-cases/merchant/merchant-use-case';
+import { createEnvironment } from '../../use-cases/environments/create-environment';
 
 /**
- * Create merchant handler
+ * Create environment handler
  * 
  * @param req - Express request object
  * @param res - Express response object
  */
-export const createMerchant = async (req: Request, res: Response): Promise<void> => {
+export const createEnvironmentHandler = async (req: Request, res: Response): Promise<void> => {
   try {
-    const merchantData = req.body;
-    const merchantUseCase = new MerchantUseCase();
-    const result = await merchantUseCase.createMerchant(merchantData);
+    const environmentData = req.body;
+    const result = await createEnvironment(environmentData);
     
     const response: ApiResponse = {
       success: true,
@@ -28,7 +27,7 @@ export const createMerchant = async (req: Request, res: Response): Promise<void>
   } catch (error) {
     const response: ApiResponse = {
       success: false,
-      error: `Error creating merchant: ${(error as Error).message}`,
+      error: `Error creating environment: ${(error as Error).message}`,
       timestamp: new Date().toISOString()
     };
     res.status(500).json(response);

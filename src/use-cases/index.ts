@@ -4,4 +4,4 @@
  * Re-exports all use cases for easier imports
  */
 
-export * from './merchant';
+export * from './environments';

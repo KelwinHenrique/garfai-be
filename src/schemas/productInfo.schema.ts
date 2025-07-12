@@ -2,13 +2,13 @@
 import { pgTable, uuid, text, integer, varchar } from 'drizzle-orm/pg-core'
 import { items } from './items.schema'
 import timestamps from './utils/timestamps'
-import { merchants } from './merchants.schema'
+import { environments } from './environments.schema'
 import { relations } from 'drizzle-orm'
 
 export const productInfo = pgTable('product_info', {
   id: uuid('id').primaryKey().defaultRandom(),
   environmentId: uuid('environment_id')
-    .references(() => merchants.id, { onDelete: 'cascade' })
+    .references(() => environments.id, { onDelete: 'cascade' })
     .notNull(),
   itemId: uuid('item_id')
     .references(() => items.id, { onDelete: 'cascade' })
