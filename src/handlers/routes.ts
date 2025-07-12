@@ -8,6 +8,7 @@ import { authRouter } from './auth';
 import { merchantRouter } from './merchant';
 import { isAuthenticated } from '../auth/auth-middleware';
 import clientRouter from './client/router';
+import menuRouter from './menu/router';
 
 /**
  * Initialize API routes
@@ -25,6 +26,9 @@ export const initRoutes = (): Router => {
 
   // Client routes
   router.use('/clients', clientRouter);
+
+  // Menu routes
+  router.use('/menu', menuRouter);
   
   return router;
 };
