@@ -30,3 +30,11 @@ export {
   PriceRange as MerchantPriceRange
 } from './merchant';
 export { BusinessHours, DayHours, businessHoursSchema, dayHoursSchema } from './merchant';
+
+// Re-export user models
+export {
+  User,
+  UserCreateInput,
+  UserUpdateInput,
+  ELoginStrategy
+} from './user';

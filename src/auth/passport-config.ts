@@ -6,7 +6,7 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { AUTH_CONFIG } from '../config/app-config';
-import { UserService } from '../services/user-service';
+import { UserService } from '../services/user.service';
 
 /**
  * User profile from Google OAuth
@@ -68,8 +68,13 @@ export const configurePassport = (): void => {
             photo: profile.photos?.[0]?.value,
           };
 
+          console.log('userProfile', userProfile);
+
           // Find or create user in database
           const user = await UserService.findOrCreateFromGoogle(userProfile);
+
+          console.log('user', user);
+
           return done(null, user);
         } catch (error) {
           return done(error as Error, undefined);
