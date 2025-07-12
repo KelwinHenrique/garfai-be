@@ -6,7 +6,7 @@
 
 import { eq } from 'drizzle-orm';
 import { db } from '../config/database';
-import { merchants } from '../schemas/merchant.schema';
+import { merchants } from '../schemas/merchants.schema';
 import { Merchant, MerchantCreateInput } from '../models';
 import { slugify } from '../utils';
 
