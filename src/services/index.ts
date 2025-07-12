@@ -5,3 +5,4 @@
  */
 
 export * from './hello-world-service';
+export * from './user-service';
