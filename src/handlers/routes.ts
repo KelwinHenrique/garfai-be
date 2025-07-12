@@ -8,6 +8,7 @@ import { authRouter } from './auth';
 import { merchantRouter } from './merchant';
 import { isAuthenticated } from '../auth/auth-middleware';
 import clientRouter from './client/router';
+import flowsRouter from './flows/router';
 
 /**
  * Initialize API routes
@@ -25,6 +26,9 @@ export const initRoutes = (): Router => {
 
   // Client routes
   router.use('/clients', clientRouter);
+
+  // Flows routes
+  router.use('/flows', flowsRouter);
   
   return router;
 };
