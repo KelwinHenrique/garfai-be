@@ -30,3 +30,13 @@ export {
   PriceRange as MerchantPriceRange
 } from './merchant';
 export { BusinessHours, DayHours, businessHoursSchema, dayHoursSchema } from './merchant';
+
+// Re-export client models
+export {
+  Client,
+  ClientAddress,
+  ClientCreateInput,
+  ClientAddressCreateInput,
+  clientCreateSchema,
+  clientAddressCreateSchema
+} from './client';
