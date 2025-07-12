@@ -5,7 +5,8 @@
  */
 import { Router } from 'express';
 import { authRouter } from './auth';
-import { storeRouter } from './store';
+import { merchantRouter } from './merchant';
+import { storeRouter } from './store'; // Kept for backward compatibility
 import { isAuthenticated } from '../auth/auth-middleware';
 
 /**
@@ -19,7 +20,10 @@ export const initRoutes = (): Router => {
   // Authentication routes
   router.use('/auth', authRouter());
   
-  // Store routes
+  // Merchant routes
+  router.use('/merchants', merchantRouter());
+  
+  // Store routes (deprecated - kept for backward compatibility)
   router.use('/stores', storeRouter());
   
   return router;

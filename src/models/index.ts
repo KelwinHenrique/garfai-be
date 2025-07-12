@@ -16,5 +16,33 @@ export interface ApiResponse<T = unknown> {
   timestamp: string;
 }
 
-// Re-export store models
-export * from './store';
+// Re-export merchant models
+export {
+  Merchant,
+  MerchantAddress,
+  MerchantCoordinates,
+  MerchantCreateInput,
+  MerchantUpdateInput,
+  merchantCreateSchema,
+  merchantUpdateSchema,
+  merchantAddressSchema,
+  merchantCoordinatesSchema,
+  PriceRange as MerchantPriceRange
+} from './merchant';
+
+// Re-export common models from merchant (these are shared between merchant and store)
+export { BusinessHours, DayHours, businessHoursSchema, dayHoursSchema } from './merchant';
+
+// Re-export store models (deprecated)
+export {
+  Store,
+  StoreAddress,
+  StoreCoordinates,
+  StoreCreateInput,
+  StoreUpdateInput,
+  storeCreateSchema,
+  storeUpdateSchema,
+  storeAddressSchema,
+  storeCoordinatesSchema,
+  PriceRange
+} from './store';
