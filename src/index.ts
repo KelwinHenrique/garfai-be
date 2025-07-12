@@ -11,31 +11,22 @@ import { SERVER_CONFIG, AUTH_CONFIG } from './config/app-config';
 import { initRoutes } from './handlers';
 import { errorHandler } from './utils';
 import { configurePassport, validateApiKeyForPublicEndpoints } from './auth';
+import sessionMiddleware from './middlewares/sessionMiddleware';
 
 // Initialize express app
 const app = express();
 const { PORT } = SERVER_CONFIG;
-
-// Configure Passport.js
-configurePassport();
 
 // Middleware for parsing JSON and cookies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Configure session middleware
-app.use(
-  session({
-    secret: AUTH_CONFIG.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: SERVER_CONFIG.NODE_ENV === 'production',
-      maxAge: AUTH_CONFIG.COOKIE_MAX_AGE,
-    },
-  })
-);
+// Configuração do express-session usando MongoDB como armazenamento
+app.use(sessionMiddleware)
+
+// Configure Passport.js
+configurePassport();
 
 // Initialize Passport middleware
 app.use(passport.initialize());

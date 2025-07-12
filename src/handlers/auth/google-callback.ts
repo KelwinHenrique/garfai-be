@@ -6,7 +6,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
-import { GoogleUserProfile } from '../../auth/passport-config';
+import { User } from '../../schemas/users.schema';
 
 /**
  * Handle Google authentication callback
@@ -16,13 +16,13 @@ import { GoogleUserProfile } from '../../auth/passport-config';
  * @param next - Express next function
  */
 export const handleGoogleCallback = (req: Request, res: Response, next: NextFunction): void => {
-  passport.authenticate('google', (err: Error | null, user: GoogleUserProfile, info: { message: string }) => {
+  passport.authenticate('google', (err: Error | null, user: User, info: { message: string }) => {
     if (err) {
       return next(err);
     }
     
     if (!user) {
-      return res.redirect('/auth/login/failed');
+      return res.redirect(`${process.env.FE_BASE_URL}/auth/login/failed`);
     }
     
     req.logIn(user, (err) => {
@@ -30,7 +30,7 @@ export const handleGoogleCallback = (req: Request, res: Response, next: NextFunc
         return next(err);
       }
       
-      return res.redirect('/auth/login/success');
+      return res.redirect(`${process.env.FE_BASE_URL}select-access`);
     });
   })(req, res, next);
 };
