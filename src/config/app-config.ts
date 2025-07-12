@@ -20,6 +20,7 @@ export const SERVER_CONFIG = {
 
 /**
  * Authentication configuration settings
+ * 
  */
 export const AUTH_CONFIG = {
   /** Session secret for encrypting session data */

@@ -13,6 +13,7 @@ import {
   handleLogout
 } from './auth-handler';
 import { isAuthenticated, isNotAuthenticated } from '../auth/auth-middleware';
+import { StoreHandler } from './store-handler';
 
 /**
  * Initialize API routes
@@ -36,6 +37,18 @@ export const initRoutes = (): Router => {
   router.get('/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route', user: req.user });
   });
+  
+  // Initialize store handler
+  const storeHandler = new StoreHandler();
+  
+  // Store routes
+  router.post('/stores', isAuthenticated, (req, res) => storeHandler.createStore(req, res));
+  router.get('/stores', (req, res) => storeHandler.getStores(req, res));
+  router.get('/stores/:id', (req, res) => storeHandler.getStoreById(req, res));
+  router.get('/stores/slug/:slug', (req, res) => storeHandler.getStoreBySlug(req, res));
+  router.put('/stores/:id', isAuthenticated, (req, res) => storeHandler.updateStore(req, res));
+  router.delete('/stores/:id', isAuthenticated, (req, res) => storeHandler.deleteStore(req, res));
+  router.patch('/stores/:id/status', isAuthenticated, (req, res) => storeHandler.toggleStoreStatus(req, res));
   
   return router;
 };
