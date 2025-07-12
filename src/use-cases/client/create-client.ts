@@ -2,7 +2,7 @@
  * Create client use case
  */
 
-import { ClientRepository } from '../../repositories/client.repository';
+import { ClientRepository } from '../../repositories/ClientRepository';
 import { Client, ClientCreateInput, clientCreateSchema } from '../../models';
 
 /**

@@ -4,7 +4,7 @@
  * Implements business logic for updating a merchant
  */
 
-import { MerchantRepository } from '../../repositories/merchant.repository';
+import { MerchantRepository } from '../../repositories/MerchantRepository';
 import { Merchant, MerchantUpdateInput, merchantUpdateSchema } from '../../models';
 
 /**
