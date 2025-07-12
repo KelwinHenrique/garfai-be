@@ -4,7 +4,7 @@
  * Implements business logic for toggling a merchant's active status
  */
 
-import { MerchantRepository } from '../../repositories/merchant.repository';
+import { MerchantRepository } from '../../repositories/MerchantRepository';
 import { Merchant } from '../../models';
 
 /**

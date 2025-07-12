@@ -2,8 +2,8 @@
  * Add client address use case
  */
 
-import { ClientRepository } from '../../repositories/client.repository';
-import { ClientAddressRepository } from '../../repositories/client-address.repository';
+import { ClientRepository } from '../../repositories/ClientRepository';
+import { ClientAddressRepository } from '../../repositories/ClientAddressRepository';
 import { ClientAddress, ClientAddressCreateInput, clientAddressCreateSchema } from '../../models';
 
 /**
