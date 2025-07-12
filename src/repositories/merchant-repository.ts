@@ -4,11 +4,10 @@
  * Handles database operations for merchant entities
  */
 
-import { v4 as uuidv4 } from 'uuid';
 import { eq } from 'drizzle-orm';
 import { db } from '../config/database';
-import { merchants } from '../models/schema';
-import { Merchant, MerchantCreateInput, MerchantUpdateInput } from '../models';
+import { merchants } from '../schemas/merchant.schema';
+import { Merchant, MerchantCreateInput } from '../models';
 import { slugify } from '../utils';
 
 /**

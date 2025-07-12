@@ -12,7 +12,6 @@ import {
   json, 
   decimal, 
   pgEnum,
-  numeric
 } from 'drizzle-orm/pg-core';
 
 /**

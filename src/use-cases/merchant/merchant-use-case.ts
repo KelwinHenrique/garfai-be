@@ -1,11 +1,11 @@
 /**
- * Merchant use cases
+ * Merchant use case class
  * 
  * Implements business logic for merchant operations
  */
 
-import { MerchantRepository } from '../repositories/merchant-repository';
-import { Merchant, MerchantCreateInput, MerchantUpdateInput, merchantCreateSchema, merchantUpdateSchema } from '../models';
+import { MerchantRepository } from '../../repositories/merchant-repository';
+import { Merchant, MerchantCreateInput, MerchantUpdateInput, merchantCreateSchema, merchantUpdateSchema } from '../../models';
 
 /**
  * Merchant use case class

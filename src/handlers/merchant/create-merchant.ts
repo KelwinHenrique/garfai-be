@@ -4,7 +4,7 @@
 
 import { Request, Response } from 'express';
 import { ApiResponse } from '../../models';
-import { MerchantUseCase } from '../../use-cases/merchant-use-case';
+import { MerchantUseCase } from '../../use-cases/merchant/merchant-use-case';
 
 /**
  * Create merchant handler
