@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser';
 import { SERVER_CONFIG, AUTH_CONFIG } from './config/app-config';
 import { initRoutes } from './handlers';
 import { errorHandler } from './utils';
-import { configurePassport } from './auth';
+import { configurePassport, validateApiKeyForPublicEndpoints } from './auth';
 
 // Initialize express app
 const app = express();
@@ -40,6 +40,14 @@ app.use(
 // Initialize Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+// API key validation for public endpoints
+// Define which paths require API key validation
+const publicPaths = [
+  '/api/public',  // Example public API path
+  '/clients/public'  // Example public client path
+];
+app.use(validateApiKeyForPublicEndpoints(publicPaths));
 
 // Initialize routes
 app.use(initRoutes());

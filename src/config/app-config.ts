@@ -21,6 +21,7 @@ export const SERVER_CONFIG = {
 /**
  * Authentication configuration settings
  * 
+ * Includes session, OAuth, and API key configurations
  */
 export const AUTH_CONFIG = {
   /** Session secret for encrypting session data */
@@ -36,4 +37,6 @@ export const AUTH_CONFIG = {
     /** Google OAuth callback URL */
     CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/auth/google/callback',
   },
+  /** API key configuration for public endpoints */
+  API_KEYS: process.env.API_KEYS ? process.env.API_KEYS.split(',') : ['default-dev-api-key'],
 };
