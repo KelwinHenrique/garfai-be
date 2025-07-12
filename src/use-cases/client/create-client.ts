@@ -21,7 +21,7 @@ export async function createClient(clientData: ClientCreateInput): Promise<Clien
   // Check if client with this phone already exists
   const existingClient = await clientRepository.findByPhone(clientData.phone);
   if (existingClient) {
-    throw new Error(`Client with phone ${clientData.phone} already exists`);
+    return existingClient;
   }
   
   return clientRepository.create(clientData);
