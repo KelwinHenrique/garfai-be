@@ -6,7 +6,7 @@ import { Router } from 'express';
 import { createClientHandler } from './create-client';
 import { addClientAddressHandler } from './add-client-address';
 import { listClientAddressesHandler } from './list-client-addresses';
-import { validateApiKey } from '../../auth';
+import { validateApiKey } from '../../middlewares/api-key-middleware';
 
 const router = Router();
 

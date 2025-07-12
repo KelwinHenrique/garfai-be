@@ -5,4 +5,4 @@
  */
 export * from './passport-config';
 export * from './auth-middleware';
-export * from './api-key-middleware';
+export * from '../middlewares/api-key-middleware';

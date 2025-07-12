@@ -7,11 +7,12 @@ import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
-import { SERVER_CONFIG, AUTH_CONFIG } from './config/app-config';
+import { SERVER_CONFIG } from './config/app-config';
 import { initRoutes } from './handlers';
 import { errorHandler } from './utils';
-import { configurePassport, validateApiKeyForPublicEndpoints } from './auth';
+import { configurePassport } from './auth';
 import sessionMiddleware from './middlewares/sessionMiddleware';
+import { validateApiKeyForPublicEndpoints } from './middlewares/api-key-middleware';
 
 // Initialize express app
 const app = express();
