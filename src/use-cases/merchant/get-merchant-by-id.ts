@@ -4,7 +4,7 @@
  * Implements business logic for retrieving a merchant by ID
  */
 
-import { MerchantRepository } from '../../repositories/merchant-repository';
+import { MerchantRepository } from '../../repositories/merchant.repository';
 import { Merchant } from '../../models';
 
 /**

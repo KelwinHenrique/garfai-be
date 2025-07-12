@@ -4,7 +4,7 @@
  * Implements business logic for creating a merchant
  */
 
-import { MerchantRepository } from '../../repositories/merchant-repository';
+import { MerchantRepository } from '../../repositories/merchant.repository';
 import { Merchant, MerchantCreateInput, merchantCreateSchema } from '../../models';
 
 /**

@@ -4,7 +4,7 @@
  * Implements business logic for retrieving a merchant by slug
  */
 
-import { MerchantRepository } from '../../repositories/merchant-repository';
+import { MerchantRepository } from '../../repositories/merchant.repository';
 import { Merchant } from '../../models';
 
 /**

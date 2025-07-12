@@ -4,7 +4,7 @@
  * Implements business logic for deleting a merchant
  */
 
-import { MerchantRepository } from '../../repositories/merchant-repository';
+import { MerchantRepository } from '../../repositories/merchant.repository';
 
 /**
  * Delete a merchant

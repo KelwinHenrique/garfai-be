@@ -33,8 +33,14 @@ export { BusinessHours, DayHours, businessHoursSchema, dayHoursSchema } from './
 
 // Re-export user models
 export {
-  User,
-  UserCreateInput,
-  UserUpdateInput,
   ELoginStrategy
 } from './user';
+// Re-export client models
+export {
+  Client,
+  ClientAddress,
+  ClientCreateInput,
+  ClientAddressCreateInput,
+  clientCreateSchema,
+  clientAddressCreateSchema
+} from './client';

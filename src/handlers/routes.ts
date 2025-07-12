@@ -7,6 +7,7 @@ import { Router } from 'express';
 import { authRouter } from './auth';
 import { merchantRouter } from './merchant';
 import { isAuthenticated } from '../auth/auth-middleware';
+import clientRouter from './client/router';
 
 /**
  * Initialize API routes
@@ -22,6 +23,8 @@ export const initRoutes = (): Router => {
   // Merchant routes
   router.use('/merchants', merchantRouter());
 
+  // Client routes
+  router.use('/clients', clientRouter);
   
   return router;
 };
