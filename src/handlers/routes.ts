@@ -9,6 +9,7 @@ import { environmentRouter } from './environment/router';
 import { isAuthenticated } from '../auth/auth-middleware';
 import clientRouter from './client/router';
 import menuRouter from './menu/router';
+import userAccessRouter from './user-access/router';
 import flowsRouter from './flows/router';
 
 /**
@@ -31,8 +32,12 @@ export const initRoutes = (): Router => {
   // Menu routes
   router.use('/menu', menuRouter);
 
+  router.use('/user-access', userAccessRouter);
+
   // Flows routes
   router.use('/flows', flowsRouter);
+  console.log('userAccessRouter');
+
   
   return router;
 };

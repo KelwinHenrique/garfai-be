@@ -13,6 +13,7 @@ import { Request, Response, NextFunction } from 'express';
  * @param next - Express next function
  */
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction): void => {
+  console.log('isAuthenticated', req.isAuthenticated());
   if (req.isAuthenticated()) {
     return next();
   }

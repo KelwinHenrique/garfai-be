@@ -8,6 +8,7 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { AUTH_CONFIG } from '../config/app-config';
 import { UserService } from '../services/user.service';
 import { findOrCreateUser } from '../use-cases/users';
+import { User as UserDrizzle } from '../schemas/users.schema';
 
 /**
  * User profile from Google OAuth
@@ -32,9 +33,9 @@ export interface GoogleUserProfile {
  */
 export const configurePassport = (): void => {
   // Serialize user to session
-  passport.serializeUser((user: Express.User, done) => {
+  passport.serializeUser((user: UserDrizzle, done) => {
     // Cast user to GoogleUserProfile to access id property
-    const userProfile = user as GoogleUserProfile;
+    const userProfile = user;
     done(null, userProfile.id);
   });
 
