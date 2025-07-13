@@ -15,6 +15,7 @@ import { garnishItems as garnishItemsTable } from '../schemas/garnishItems.schem
 import { productInfo } from '../schemas/productInfo.schema';
 import { sellingOptions } from '../schemas/sellingOptions.schema';
 import { productAisles } from '../schemas/productAisles.schema';
+import { sql } from 'drizzle-orm';
 
 /**
  * Menu repository class
@@ -66,6 +67,45 @@ export class MenuRepository {
   async getById(id: string): Promise<Menu | null> {
     const menu = await db.select().from(menus).where(eq(menus.id, id)).limit(1);
     return menu.length > 0 ? menu[0] as unknown as Menu : null;
+  }
+
+  /**
+   * Get all non-deleted menus for a specific environment
+   * 
+   * @param environmentId - Environment ID
+   * @returns Array of menus for the environment
+   */
+  async getMenusByEnvironmentId(environmentId: string): Promise<Menu[]> {
+    const result = await db
+      .select()
+      .from(menus)
+      .where(
+        and(
+          eq(menus.environmentId, environmentId)
+        )
+      )
+      .orderBy(asc(menus.createdAt));
+
+    return result as Menu[];
+  }
+
+  /**
+   * Count menus for a specific environment
+   * 
+   * @param environmentId - Environment ID
+   * @returns Count of menus for the environment
+   */
+  async countMenusByEnvironmentId(environmentId: string): Promise<number> {
+    const result = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(menus)
+      .where(
+        and(
+          eq(menus.environmentId, environmentId)
+        )
+      );
+
+    return result[0]?.count || 0;
   }
 
   /**

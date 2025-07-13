@@ -4,6 +4,7 @@
 import { Router } from 'express';
 import { importMenu } from './import-menu';
 import { getMenuByIdHandler } from './get-menu-by-id';
+import { getMenuHandler } from './get-menus';
 
 const router = Router();
 
@@ -13,6 +14,13 @@ const router = Router();
  * @access Private
  */
 router.post('/import', importMenu);
+
+/**
+ * @route GET /menu
+ * @desc Get all menus for an environment
+ * @access Private
+ */
+router.get('/', getMenuHandler);
 
 /**
  * @route GET /menu/:id
