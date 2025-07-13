@@ -12,6 +12,30 @@
 
 GarfAI é uma plataforma inovadora que utiliza Inteligência Artificial Generativa para transformar a experiência de gestão e interação com cardápios digitais. Desenvolvido para o [Adapta AI Challenge 2025](https://adapta.org/hackathon), o GarfAI resolve desafios reais do setor alimentício através de uma arquitetura robusta e escalável.
 
+## 🖼️ Arquitetura do Projeto
+
+![GarfAI Architecture](assets/GarfAI.io.drawio.png)
+
+O GarfAI Backend segue princípios SOLID e utiliza uma arquitetura modular:
+
+```
+garfai-be/
+│── src/                  📂
+│   │── agents/           # Agentes de IA 🤖
+│   │── config/           # Configurações ⚙️
+│   │── handlers/         # Manipuladores de rotas 🔗
+│   │── middlewares/      # Middlewares Express 🔒
+│   │── repositories/     # Acesso a dados 💾
+│   │── schemas/          # Esquemas de banco de dados 📊
+│   │── services/         # Serviços de negócio ✨
+│   │── types/            # Definições de tipos 📝
+│   │── use-cases/        # Casos de uso 📃
+│   └── utils/            # Utilitários 🔧
+│── drizzle.config.ts     # Configuração do Drizzle ORM 💧
+└── index.ts              # Ponto de entrada da aplicação 🔥
+```
+
+
 ## 🛠️ Stack Tecnológica
 
 - **Backend**: TypeScript, Node.js, Express
@@ -105,31 +129,8 @@ npm run dev
 
 📍 O servidor estará disponível em http://localhost:4000
 
-## 🖼️ Arquitetura do Projeto
-
-![GarfAI Architecture](assets/GarfAI.io.drawio.png)
-
-O GarfAI Backend segue princípios SOLID e utiliza uma arquitetura modular:
-
-```
-garfai-be/
-│── src/                  📂
-│   │── agents/           # Agentes de IA 🤖
-│   │── config/           # Configurações ⚙️
-│   │── handlers/         # Manipuladores de rotas 🔗
-│   │── middlewares/      # Middlewares Express 🔒
-│   │── repositories/     # Acesso a dados 💾
-│   │── schemas/          # Esquemas de banco de dados 📊
-│   │── services/         # Serviços de negócio ✨
-│   │── types/            # Definições de tipos 📝
-│   │── use-cases/        # Casos de uso 📃
-│   └── utils/            # Utilitários 🔧
-│── drizzle.config.ts     # Configuração do Drizzle ORM 💧
-└── index.ts              # Ponto de entrada da aplicação 🔥
-```
-
 ## 🏆 Contribuição para o Hackathon Adapta
 
 [![Adapta AI Challenge](https://img.shields.io/badge/Hackathon-Adapta%20AI%202025-orange.svg)](https://adapta.org/hackathon)
 
-Este projeto foi desenvolvido como parte do Adapta AI Challenge 2025, focando no desafio de Web Apps com IA Generativa Nativa 🤖. O GarfAI demonstra como a IA generativa pode transformar processos tradicionais do setor alimentício, criando experiências mais ricas e eficientes tanto para gestores quanto para clientes 🍽️✨.
+Este projeto foi desenvolvido como parte do Adapta AI Challenge 2025, focando no desafio de Além do chat com IA Generativa 🤖. O GarfAI demonstra como a IA generativa pode transformar processos tradicionais do setor alimentício, criando experiências mais ricas e eficientes tanto para gestores quanto para clientes 🍽️✨.
