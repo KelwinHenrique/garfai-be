@@ -152,7 +152,7 @@ export async function importEnvironment(payload: any): Promise<any> {
       role: EAccessRole.ADMIN,
     };
     await userAccessRepository.create(userAccessPayload);
-    await importMenu({ environmentId: environment.id, merchantId: payload.ifoodMerchantId }, environment.id, payload.userId);   
+    await importMenu({ environmentId: environment.id, ifoodMerchantId: payload.ifoodMerchantId }, environment.id, payload.userId);   
 
     return {
       httpStatus: 201,

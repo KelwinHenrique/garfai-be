@@ -139,7 +139,7 @@ export async function importMenu(
       rawCatalogData: iFoodData,
     };
 
-    const updatedMenu = await menuRepository.updateGeneric(
+    await menuRepository.updateGeneric(
       initialMenu.id,
       updatedMenuPayload
     );
