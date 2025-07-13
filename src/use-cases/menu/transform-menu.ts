@@ -3,10 +3,6 @@
  * 
  * Transforms menu data to match iFood API shape
  */
-
-import { Choice } from '../../schemas/choices.schema';
-import { Item } from '../../schemas/items.schema';
-import { MenuCategory } from '../../schemas/menuCategories.schema';
 import {
   EDietaryRestriction,
   EDishClassification,
