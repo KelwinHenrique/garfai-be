@@ -147,11 +147,12 @@ export class ItemRepository {
         and(sql`${items.tags} && ${sql.param(tags, items.tags)}`)
       )
 
-
-    console.log(itemsResult)
-    const processedItems = itemsResult.map(row => ({
-      ...row,
-    }));
+    const processedItems = itemsResult.map(row => {
+      const { logoBase64, ...rest } = row;
+      return {
+        ...rest,
+      }
+    });
 
     return {
       items: processedItems,
