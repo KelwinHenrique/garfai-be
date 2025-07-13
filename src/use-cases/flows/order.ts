@@ -1,5 +1,7 @@
 import { handleHomeScreenDataExchange } from './screens/home.service'
 import { handleEnvironmentListScreenDataExchange } from './screens/environment-list.service'
+import { handleCatalogMenuScreenDataExchange } from './screens/catalog-menu.service'
+import { handleMenuItemScreenDataExchange } from './screens/menu-item.service'
 
 
 type ActionName = 'ping' | 'INIT' | 'data_exchange' | 'BACK'
@@ -7,6 +9,8 @@ type ActionName = 'ping' | 'INIT' | 'data_exchange' | 'BACK'
 type ScreenName =
   | 'HOME_SCREEN'
   | 'ENVIRONMENT_LIST'
+  | 'CATALOG_MENU'
+  | 'MENU_ITEM'
 
 interface ActionPayload {
   action: ActionName
@@ -32,6 +36,8 @@ const ping = async (payload: any): Promise<any> => {
 const screenMap: Record<ScreenName, ActionFunction> = {
   HOME_SCREEN: handleHomeScreenDataExchange,
   ENVIRONMENT_LIST: handleEnvironmentListScreenDataExchange,
+  CATALOG_MENU: handleCatalogMenuScreenDataExchange,
+  MENU_ITEM: handleMenuItemScreenDataExchange,
 }
 
 const dataExchange = async (payload: DataExchangePayload): Promise<any> => {
@@ -46,9 +52,8 @@ const dataExchange = async (payload: DataExchangePayload): Promise<any> => {
     console.log('error', error)
     return {
       httpStatus: 500,
-      message: `Error: ${
-        error instanceof Error ? error.message : 'Unknown error'
-      }`,
+      message: `Error: ${error instanceof Error ? error.message : 'Unknown error'
+        }`,
     }
   }
 }

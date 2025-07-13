@@ -44,7 +44,7 @@ const selectEnvironment = async (payload: any): Promise<any> => {
     whatsappFlowsId: flowsId,
     environmentId: payload.data.selectedRestaurant,
     clientAddressId: payload.data.selectedAddress,
-  }, clientId);
+  }, clientId)
 
   const sectionsMap: SectionsMap = {
     0: 'firstSection',
@@ -116,7 +116,6 @@ const selectEnvironment = async (payload: any): Promise<any> => {
     }
     data[`${sectionsMap[index]}Show`] = true
   })
-  console.log("chegou aqui", transformedMenu)
   return {
     screen: 'CATALOG_MENU',
     data

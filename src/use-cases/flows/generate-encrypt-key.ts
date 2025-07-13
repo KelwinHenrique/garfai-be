@@ -62,10 +62,7 @@ export async function generateEncryptKey(): Promise<EncryptKeyResponse> {
         'Content-Type': 'application/json',
       },
     },
-  )
-
-  console.log("result", response)
-  
+  )  
   
   return {
     privateKey,

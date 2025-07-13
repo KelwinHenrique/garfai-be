@@ -16,7 +16,7 @@ import { Order } from '../../models/order';
  * @param clientId - Client ID
  * @returns The order with its items or null if not found
  */
-export async function getOrderByFlowAndClient(flowId: string, clientId: string) {
+export async function getOrderByFlowAndClient(flowId: string, clientId: string, environmentId: string) {
   // Find the order that matches both flowId and clientId
   const orderResults = await db
     .select()
@@ -24,6 +24,7 @@ export async function getOrderByFlowAndClient(flowId: string, clientId: string) 
     .where(
       and(
         eq(orders.whatsappFlowsId, flowId),
+        eq(orders.environmentId, environmentId),
         eq(orders.clientId, clientId)
       )
     )
