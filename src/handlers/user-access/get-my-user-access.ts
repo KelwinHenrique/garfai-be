@@ -16,7 +16,7 @@ import { getMyUserAccess } from '../../use-cases/user-access/get-my-user-access'
 export const getMyUserAccessHandler = async (req: Request, res: Response): Promise<void> => {
   try {
     console.log('getMyUserAccessHandler');
-    if (!req.user?.id) {
+    if (!req.user || !req.user.id) {
       res.status(401).json({
         success: false,
         message: 'User not authenticated'
