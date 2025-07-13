@@ -162,7 +162,7 @@ export class ItemRepository {
       .from(items)
       .where(
         and(sql`${items.tags} && ${sql.param(tags, items.tags)}`)
-      )
+      ).limit(10);
 
     const processedItems = itemsResult.map(row => {
       const { logoBase64, ...rest } = row;
