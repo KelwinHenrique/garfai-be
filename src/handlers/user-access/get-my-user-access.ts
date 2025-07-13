@@ -24,8 +24,6 @@ export const getMyUserAccessHandler = async (req: Request, res: Response): Promi
       return;
     }
 
-    console.log('req.user', req.user);
-
     const userAccessList = await getMyUserAccess(req.user.id);
 
     res.status(200).json({
