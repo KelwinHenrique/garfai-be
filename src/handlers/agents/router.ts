@@ -4,7 +4,12 @@
  * Defines routes for AI agent interactions
  */
 import { Router } from 'express';
-import { processFoodImage, getJobStatus } from './food-image-handler';
+import { 
+  processFoodImage, 
+  getJobStatus, 
+  getItemJobs, 
+  getLatestItemJob 
+} from './food-image-handler';
 
 /**
  * Initialize agents router with all agent-related endpoints
@@ -15,6 +20,10 @@ const agentsRouter = Router();
 
 // Food image processing endpoints
 agentsRouter.post('/food-image', processFoodImage);
+
+// Job status endpoints
 agentsRouter.get('/food-image/job/:jobId', getJobStatus);
+agentsRouter.get('/food-image/item/:itemId/jobs', getItemJobs);
+agentsRouter.get('/food-image/item/:itemId/latest', getLatestItemJob);
 
 export default agentsRouter;
