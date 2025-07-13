@@ -1,5 +1,5 @@
 /**
- * Get environment by ID handler
+ * Get environments handler
  */
 
 import { Request, Response } from 'express';
@@ -7,18 +7,22 @@ import { ApiResponse } from '../../models';
 import { getEnvironments } from '../../use-cases/environments/get-environment';
 
 /**
- * Get environment by ID handler
+ * Get environments handler
  * 
  * @param req - Express request object
  * @param res - Express response object
  */
 export const getEnvironmentsHandler = async (req: Request, res: Response): Promise<void> => {
   try {
-    const environment = await getEnvironments();
+    // Extract query parameters
+    const categoryCode = req.query.categoryCode as string | undefined;
+    
+    // Call the use case with the categoryCode filter if provided
+    const environments = await getEnvironments(undefined, categoryCode);
     
     const response: ApiResponse = {
       success: true,
-      data: environment,
+      data: environments,
       timestamp: new Date().toISOString()
     };
     
@@ -26,7 +30,7 @@ export const getEnvironmentsHandler = async (req: Request, res: Response): Promi
   } catch (error) {
     const response: ApiResponse = {
       success: false,
-      error: `Error retrieving environment: ${(error as Error).message}`,
+      error: `Error retrieving environments: ${(error as Error).message}`,
       timestamp: new Date().toISOString()
     };
     res.status(500).json(response);

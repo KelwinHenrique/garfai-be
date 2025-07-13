@@ -1,7 +1,18 @@
+import { handleHomeScreenDataExchange } from './screens/home.service'
+
+
 type ActionName = 'ping' | 'INIT' | 'data_exchange' | 'BACK'
+
+type ScreenName =
+  | 'HOME_SCREEN'
 
 interface ActionPayload {
   action: ActionName
+  [key: string]: any
+}
+
+interface DataExchangePayload {
+  screen: ScreenName
   [key: string]: any
 }
 
@@ -16,11 +27,34 @@ const ping = async (payload: any): Promise<any> => {
   }
 }
 
+const screenMap: Record<ScreenName, ActionFunction> = {
+  HOME_SCREEN: handleHomeScreenDataExchange
+}
+
+const dataExchange = async (payload: DataExchangePayload): Promise<any> => {
+  try {
+    if (payload.screen in screenMap) {
+      console.log('DataExchange: ', payload.screen)
+      return screenMap[payload.screen](payload)
+    } else {
+      throw new Error(`Action '${payload.action}' not found`)
+    }
+  } catch (error) {
+    console.log('error', error)
+    return {
+      httpStatus: 500,
+      message: `Error: ${
+        error instanceof Error ? error.message : 'Unknown error'
+      }`,
+    }
+  }
+}
+
 const actionsMap: Record<ActionName, ActionFunction> = {
   ping,
   INIT: ping,
   BACK: ping,
-  data_exchange: ping,
+  data_exchange: dataExchange,
 }
 
 /**
