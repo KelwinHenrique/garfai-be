@@ -7,8 +7,10 @@ import { createOrder } from '../../order/create-order';
 import getFlowsClientIdAndFlowsId from '../../../utils/getFlowsClientIdAndFlowsId'
 import { getItemById } from '../../../use-cases/menu/get-item-by-id';
 import { TransformedItem } from '../../../use-cases/menu/transform-menu';
+import { getOrderByFlowAndClient } from '../../../use-cases/order/get-order-by-flow-and-client';
+import { createStaticPix, hasError } from 'pix-utils';
 
-type ActionName = 'selectItem'
+type ActionName = 'selectItem' | 'nextStep'
 
 interface SectionsMap {
   [key: number]: string
@@ -129,8 +131,60 @@ const selectItem = async (payload: any): Promise<any> => {
   }
 }
 
+const nextStep = async (payload: any): Promise<any> => {
+  const { clientId, flowsId } = getFlowsClientIdAndFlowsId(payload.flow_token)
+
+  const order = await getOrderByFlowAndClient(flowsId, clientId, payload.data.environment.id);
+
+  if (order?.items.length === 0) {
+    return {
+      screen: 'CATALOG_MENU',
+      data: {
+        error_message: 'Insira um item no carrinho para seguir'
+      }
+    }
+  }
+
+  const pix = createStaticPix({
+    merchantName: 'GarfAI',
+    merchantCity: 'Uberlandia',
+    pixKey: '431.253.808-55',
+    infoAdicional: 'Gerado por GarfAI',
+    transactionAmount: order!.subtotalAmount
+  });
+
+  let brCode
+  if (!hasError(pix)) {
+    brCode = pix.toBRCode();
+  }
+
+  const paymentsItems = order?.items.map(it => ({
+    retailer_id: it.id,
+    name: it.descriptionAtPurchase,
+    quantity: it.quantity,
+    amount: {
+      value: it.totalPriceForItemLine,
+      offset: 100
+    },
+  }))
+
+  return {
+    screen: 'PAYMENT_SCREEN',
+    data: {
+      total: order?.subtotalAmount,
+      pix: brCode,
+      paymentsItems,
+      footerProps: {
+        leftText: formatItemsQuantity(order?.items.length || 0),
+        rightText: convertCentsToFormattedPrice(order!.subtotalAmount),
+      },
+    }
+  }
+}
+
 const actionsMap: Record<ActionName, ActionFunction> = {
   selectItem,
+  nextStep,
 }
 
 export const handleCatalogMenuScreenDataExchange = async (payload: ActionPayload) => {
