@@ -4,7 +4,7 @@
  * This file sets up the Express server and configures middleware and routes.
  */
 import express from 'express';
-import session from 'express-session';
+
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import { SERVER_CONFIG } from './config/app-config';
@@ -12,16 +12,22 @@ import { initRoutes } from './handlers';
 import { errorHandler } from './utils';
 import { configurePassport } from './auth';
 import sessionMiddleware from './middlewares/sessionMiddleware';
+import corsMiddleware from './middlewares/cors-middleware';
 import { validateApiKeyForPublicEndpoints } from './middlewares/api-key-middleware';
 
 // Initialize express app
 const app = express();
 const { PORT } = SERVER_CONFIG;
 
+// Apply CORS middleware
+app.use(corsMiddleware);
+
 // Middleware for parsing JSON and cookies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+
 
 // Configuração do express-session usando MongoDB como armazenamento
 app.use(sessionMiddleware)
