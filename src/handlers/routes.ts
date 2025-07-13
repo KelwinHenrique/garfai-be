@@ -10,6 +10,7 @@ import { isAuthenticated } from '../auth/auth-middleware';
 import clientRouter from './client/router';
 import menuRouter from './menu/router';
 import flowsRouter from './flows/router';
+import orderRouter from './order/router';
 
 /**
  * Initialize API routes
@@ -33,6 +34,9 @@ export const initRoutes = (): Router => {
 
   // Flows routes
   router.use('/flows', flowsRouter);
+
+  // Order routes
+  router.use('/orders', orderRouter);
   
   return router;
 };
