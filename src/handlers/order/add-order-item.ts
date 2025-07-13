@@ -7,12 +7,17 @@ import * as yup from 'yup';
 import { ApiResponse } from '../../models';
 import { addOrderItem } from '../../use-cases/order/add-order-item';
 
+interface IGarnishItem {
+  garnishId: string;
+  quantity: number;
+}
+
 /**
  * Interface for choice body in add item request
  */
 export interface IChoiceBody {
   choiceId: string;
-  optionId: string;
+  garnishItems: IGarnishItem[];
 }
 
 /**
@@ -35,7 +40,12 @@ export const addItemSchema = yup.object({
   choices: yup.array().of(
     yup.object({
       choiceId: yup.string().uuid().required(),
-      optionId: yup.string().uuid().required(),
+      garnishItems: yup.array().of(
+        yup.object({
+          garnishId: yup.string().uuid().required(),
+          quantity: yup.number().integer().positive().required()
+        })
+      )
     })
   ).optional(),
 }).required();
@@ -54,7 +64,7 @@ export const addOrderItemHandler = async (req: Request, res: Response): Promise<
     const { orderId } = req.params;
     
     // Validate request body
-    let itemData: IAddItemBody;
+    let itemData: any;
     try {
       itemData = await addItemSchema.validate(req.body);
     } catch (validationError) {

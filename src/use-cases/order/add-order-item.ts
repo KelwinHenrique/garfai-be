@@ -98,25 +98,27 @@ export async function addOrderItem(orderId: string, itemData: IAddItemBody, clie
         const createdOrderChoice = await orderChoiceRepository.create(orderChoiceData, tx);
         
         // Validate that the option exists
-        const [menuOption] = await tx.select().from(garnishItems).where(eq(garnishItems.id, choiceData.optionId)).limit(1);
-        if (!menuOption) {
-          throw new Error(`Option with ID ${choiceData.optionId} not found`);
+
+        for (const garnishItem of choiceData.garnishItems) {
+          const [menuOption] = await tx.select().from(garnishItems).where(eq(garnishItems.id, garnishItem.garnishId)).limit(1);
+          if (!menuOption) {
+            throw new Error(`Option with ID ${garnishItem.garnishId} not found`);
+          }
+          const orderGarnishItemData = {
+            environmentId: order.environmentId,
+            orderChoiceId: createdOrderChoice.id,
+            garnishItemId: garnishItem.garnishId,
+            descriptionAtPurchase: menuOption.description,
+            detailsAtPurchase: menuOption.details,
+            unitPriceAtPurchase: menuOption.unitPrice,
+            logoUrlAtPurchase: menuOption.logoUrl,
+            quantity: garnishItem.quantity,
+            totalPriceForGarnishItemLine: menuOption.unitPrice * garnishItem.quantity
+          };
+          
+          await orderGarnishItemRepository.create(orderGarnishItemData, tx);
         }
         
-        // Create order garnish item (option)
-        const orderGarnishItemData = {
-          environmentId: order.environmentId,
-          orderChoiceId: createdOrderChoice.id,
-          garnishItemId: choiceData.optionId,
-          descriptionAtPurchase: menuOption.description,
-          detailsAtPurchase: menuOption.details,
-          unitPriceAtPurchase: menuOption.unitPrice,
-          logoUrlAtPurchase: menuOption.logoUrl,
-          quantity: 1,
-          totalPriceForGarnishItemLine: menuOption.unitPrice
-        };
-        
-        await orderGarnishItemRepository.create(orderGarnishItemData, tx);
       }
     }
     
