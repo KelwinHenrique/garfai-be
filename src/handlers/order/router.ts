@@ -6,6 +6,7 @@ import { Router } from 'express';
 import { createOrderHandler } from './create-order';
 import { getOrderByIdHandler } from './get-order-by-id';
 import { listClientOrdersHandler } from './list-client-orders';
+import { addOrderItemHandler } from './add-order-item';
 import { validateApiKey } from '../../middlewares/api-key-middleware';
 import { validateClientId } from '../../middlewares/client-id-middleware';
 
@@ -35,5 +36,14 @@ router.get('/:id', validateApiKey, validateClientId, getOrderByIdHandler);
  * @header clientId - Required client identifier
  */
 router.get('/', validateApiKey, validateClientId, listClientOrdersHandler);
+
+/**
+ * @route POST /api/orders/:orderId/items
+ * @description Add an item to an existing order
+ * @access Private
+ * @body {itemId, quantity, notes?, choices?}
+ * @header clientId - Required client identifier
+ */
+router.post('/:orderId/items', validateApiKey, validateClientId, addOrderItemHandler);
 
 export default router;

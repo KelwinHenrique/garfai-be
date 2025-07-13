@@ -146,6 +146,7 @@ export const transformFullMenuToIFoodShape = (
         return {
           id: item.id,
           description: item.description,
+          logoBase64: item.logoBase64,
           details: item.details,
           logoUrl: item.logoUrl,
           needChoices: item.needChoices,

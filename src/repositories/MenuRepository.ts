@@ -267,7 +267,7 @@ async getFullMenuByEnvironmentId(environmentId: string): Promise<any> {
     // For each item, get related data
     for (const item of itemsResult) {
       // Remove logoBase64 from item
-      const { logoBase64, ...itemWithoutLogo } = item;
+      const { ...itemWithoutLogo } = item;
       
       // Get product info
       const productInfoResult = await db
@@ -316,12 +316,13 @@ async getFullMenuByEnvironmentId(environmentId: string): Promise<any> {
       
       // Combine all item data with proper typing
       const fullItem: any = {
-        ...itemWithoutLogo,
+        ...item,
         productInfo: productInfoResult.length > 0 ? productInfoResult[0] : null,
         sellingOption: sellingOptionResult.length > 0 ? sellingOptionResult[0] : null,
         choices: choicesWithGarnishItems,
         productAisles: productAislesResult
       };
+      console.log(fullItem);
       
       categoryWithItems.items.push(fullItem);
     }
