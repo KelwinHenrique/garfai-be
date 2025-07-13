@@ -3,7 +3,7 @@
  */
 import { Router } from 'express';
 import { importMenu } from './import-menu';
-import { getMenuByIdHandler } from './get-menu-by-id';
+import { getMenuByEnvironmentIdHandler } from './get-menu-by-environment-id';
 import { getMenuHandler } from './get-menus';
 
 const router = Router();
@@ -27,6 +27,6 @@ router.get('/', getMenuHandler);
  * @desc Get a menu by ID
  * @access Private
  */
-router.get('/:id', getMenuByIdHandler);
+router.get('/:id', getMenuByEnvironmentIdHandler);
 
 export default router;
