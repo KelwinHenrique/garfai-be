@@ -7,6 +7,7 @@ import { getMenuByIdHandler } from './get-menu-by-id';
 import { getMenuHandler } from './get-menus';
 import { getMenuByEnvironmentIdHandler } from './get-menu-by-environment-id';
 import { getItemByIdHandler } from './get-item-by-id';
+import { listItemsByTagsHandler } from './list-items-by-tags';
 
 const router = Router();
 
@@ -44,5 +45,12 @@ router.get('/environment/:environmentId', getMenuByEnvironmentIdHandler);
  * @access Private
  */
 router.get('/item/:id', getItemByIdHandler);
+
+/**
+ * @route GET /menu/items/by-tags
+ * @desc List items filtered by tags
+ * @access Private
+ */
+router.get('/items/by-tags', listItemsByTagsHandler);
 
 export default router;

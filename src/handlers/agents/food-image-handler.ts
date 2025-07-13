@@ -35,7 +35,7 @@ export const processFoodImage = async (req: Request, res: Response): Promise<voi
     };
     
     // Initialize the agent
-    const foodImageAgent = new FoodImageAgent(agentConfig);
+    const foodImageAgent = new FoodImageAgent(agentConfig, imageUrl);
     
     // Process the image with optional parameters
     const options = {

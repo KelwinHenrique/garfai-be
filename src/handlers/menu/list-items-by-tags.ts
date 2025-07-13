@@ -1,0 +1,84 @@
+/**
+ * Handler for listing items by tags
+ * 
+ * This handler allows filtering items by one or more tags
+ */
+import { Request, Response } from 'express';
+import { ItemRepository } from '../../repositories/ItemRepository';
+import { EItemTags } from '../../types/IItem';
+import * as yup from 'yup';
+
+// Create an instance of the item repository
+const itemRepository = new ItemRepository();
+
+/**
+ * Validation schema for query parameters
+ */
+const querySchema = yup.object({
+  environmentId: yup.string().uuid().required(),
+  tags: yup.string().required(),
+  page: yup.number().integer().min(1).default(1),
+  limit: yup.number().integer().min(1).max(100).default(20)
+});
+
+/**
+ * List items by tags handler
+ * 
+ * @param req - Express request object
+ * @param res - Express response object
+ */
+export const listItemsByTagsHandler = async (req: Request, res: Response): Promise<void> => {
+  try {
+    // Validate and parse query parameters
+    const { environmentId, tags, page, limit } = await querySchema.validate(req.query);
+    
+    // Parse tags from comma-separated string to array
+    const tagsList = tags.split(',').map(tag => tag.trim().toUpperCase());
+    
+    // Validate that all tags are valid EItemTags
+    const validTags = Object.values(EItemTags);
+    const invalidTags = tagsList.filter(tag => !validTags.includes(tag as EItemTags));
+    
+    if (invalidTags.length > 0) {
+      res.status(400).json({
+        success: false,
+        message: `Invalid tags: ${invalidTags.join(', ')}`,
+        validTags
+      });
+      return;
+    }
+    
+    // Get items with pagination
+    const result = await itemRepository.findItemsByTags(
+      environmentId,
+      tagsList as EItemTags[],
+      page,
+      limit
+    );
+    
+    res.status(200).json({
+      success: true,
+      data: result.items,
+      pagination: {
+        total: result.total,
+        page,
+        limit,
+        pages: Math.ceil(result.total / limit)
+      }
+    });
+  } catch (error) {
+    if (error instanceof yup.ValidationError) {
+      res.status(400).json({
+        success: false,
+        message: error.message
+      });
+      return;
+    }
+    
+    console.error('Error listing items by tags:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
+};
