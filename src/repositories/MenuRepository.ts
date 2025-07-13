@@ -266,63 +266,60 @@ async getFullMenuByEnvironmentId(environmentId: string): Promise<any> {
     
     // For each item, get related data
     for (const item of itemsResult) {
-      // Remove logoBase64 from item
-      const { ...itemWithoutLogo } = item;
       
       // Get product info
-      const productInfoResult = await db
-        .select()
-        .from(productInfo)
-        .where(eq(productInfo.itemId, item.id))
-        .limit(1);
+      // const productInfoResult = await db
+      //   .select()
+      //   .from(productInfo)
+      //   .where(eq(productInfo.itemId, item.id))
+      //   .limit(1);
       
       // Get selling option
-      const sellingOptionResult = await db
-        .select()
-        .from(sellingOptions)
-        .where(eq(sellingOptions.itemId, item.id))
-        .limit(1);
+      // const sellingOptionResult = await db
+      //   .select()
+      //   .from(sellingOptions)
+      //   .where(eq(sellingOptions.itemId, item.id))
+      //   .limit(1);
       
-      // Get choices
-      const choicesResult = await db
-        .select()
-        .from(choices)
-        .where(eq(choices.itemId, item.id))
-        .orderBy(asc(choices.displayOrder));
+      // // Get choices
+      // const choicesResult = await db
+      //   .select()
+      //   .from(choices)
+      //   .where(eq(choices.itemId, item.id))
+      //   .orderBy(asc(choices.displayOrder));
       
       // For each choice, get garnish items
-      const choicesWithGarnishItems: any[] = [];
-      for (const choice of choicesResult) {
-        const garnishItemsResult = await db
-          .select()
-          .from(garnishItemsTable)
-          .where(eq(garnishItemsTable.choiceId, choice.id))
-          .orderBy(asc(garnishItemsTable.displayOrder));
+      // const choicesWithGarnishItems: any[] = [];
+      // for (const choice of choicesResult) {
+      //   const garnishItemsResult = await db
+      //     .select()
+      //     .from(garnishItemsTable)
+      //     .where(eq(garnishItemsTable.choiceId, choice.id))
+      //     .orderBy(asc(garnishItemsTable.displayOrder));
         
-        // Remove logoBase64 from garnish items
-        const garnishItemsWithoutLogo: any[] = garnishItemsResult.map(({ logoBase64, ...rest }) => rest);
+      //   // Remove logoBase64 from garnish items
+      //   const garnishItemsWithoutLogo: any[] = garnishItemsResult.map(({ logoBase64, ...rest }) => rest);
         
-        choicesWithGarnishItems.push({
-          ...choice,
-          garnishItems: garnishItemsWithoutLogo
-        });
-      }
+      //   choicesWithGarnishItems.push({
+      //     ...choice,
+      //     garnishItems: garnishItemsWithoutLogo
+      //   });
+      // }
       
       // Get product aisles
-      const productAislesResult = await db
-        .select()
-        .from(productAisles)
-        .where(eq(productAisles.itemId, item.id));
+      // const productAislesResult = await db
+      //   .select()
+      //   .from(productAisles)
+      //   .where(eq(productAisles.itemId, item.id));
       
       // Combine all item data with proper typing
       const fullItem: any = {
         ...item,
-        productInfo: productInfoResult.length > 0 ? productInfoResult[0] : null,
-        sellingOption: sellingOptionResult.length > 0 ? sellingOptionResult[0] : null,
-        choices: choicesWithGarnishItems,
-        productAisles: productAislesResult
+        // productInfo: productInfoResult.length > 0 ? productInfoResult[0] : null,
+        // sellingOption: sellingOptionResult.length > 0 ? sellingOptionResult[0] : null,
+        // choices: choicesWithGarnishItems,
+        // productAisles: productAislesResult
       };
-      console.log(fullItem);
       
       categoryWithItems.items.push(fullItem);
     }
