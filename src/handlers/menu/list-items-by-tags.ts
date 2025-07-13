@@ -15,7 +15,6 @@ const itemRepository = new ItemRepository();
  * Validation schema for query parameters
  */
 const querySchema = yup.object({
-  environmentId: yup.string().uuid().required(),
   tags: yup.string().required(),
   page: yup.number().integer().min(1).default(1),
   limit: yup.number().integer().min(1).max(100).default(100)
@@ -30,7 +29,7 @@ const querySchema = yup.object({
 export const listItemsByTagsHandler = async (req: Request, res: Response): Promise<void> => {
   try {
     // Validate and parse query parameters
-    const { environmentId, tags, page, limit } = await querySchema.validate(req.query);
+    const { tags, page, limit } = await querySchema.validate(req.query);
     
     // Parse tags from comma-separated string to array
     const tagsList = tags.split(',').map(tag => tag.trim().toUpperCase());
@@ -50,7 +49,6 @@ export const listItemsByTagsHandler = async (req: Request, res: Response): Promi
     
     // Get items with pagination
     const result = await itemRepository.findItemsByTags(
-      environmentId,
       tagsList as EItemTags[],
       page,
       limit
@@ -59,12 +57,6 @@ export const listItemsByTagsHandler = async (req: Request, res: Response): Promi
     res.status(200).json({
       success: true,
       data: result.items,
-      pagination: {
-        total: result.total,
-        page,
-        limit,
-        pages: Math.ceil(result.total / limit)
-      }
     });
   } catch (error) {
     if (error instanceof yup.ValidationError) {
