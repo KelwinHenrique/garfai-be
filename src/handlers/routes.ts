@@ -12,6 +12,7 @@ import menuRouter from './menu/router';
 import userAccessRouter from './user-access/router';
 import flowsRouter from './flows/router';
 import orderRouter from './order/router';
+import { agentsRouter } from './agents';
 
 /**
  * Initialize API routes
@@ -40,6 +41,9 @@ export const initRoutes = (): Router => {
 
   // Order routes
   router.use('/orders', orderRouter);
+
+  // Agents routes
+  router.use('/agents', agentsRouter);
   
   return router;
 };

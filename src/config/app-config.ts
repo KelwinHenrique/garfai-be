@@ -4,6 +4,7 @@
  * Central place for all application configuration settings
  */
 import dotenv from 'dotenv';
+import { z } from 'zod';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -39,4 +40,17 @@ export const AUTH_CONFIG = {
   },
   /** API key configuration for public endpoints */
   API_KEYS: process.env.API_KEYS ? process.env.API_KEYS.split(',') : ['default-dev-api-key'],
+};
+
+/**
+ * AI services configuration settings
+ * 
+ * Configuration for AI providers and services
+ */
+export const AI_CONFIG = {
+  /** Google AI API configuration */
+  GOOGLE: {
+    /** Google API key for AI services */
+    API_KEY: process.env.GOOGLE_API_KEY || '',
+  },
 };

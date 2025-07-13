@@ -1,13 +1,13 @@
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { AgentExecutor, createToolCallingAgent } from "langchain/agents";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { ImageAnalysisTool } from "../tools/image-analysis-tool.js";
-import { ImageGenerationTool } from "../tools/image-generation-tool.js";
+import { ImageAnalysisTool } from "../tools/image-analysis-tool";
+import { ImageGenerationTool } from "../tools/image-generation-tool";
 import { 
   AgentConfig, 
   AgentResponse, 
   ImageProcessingResult,
-} from "../types/agent.types.js";
+} from "../types/agent.types";
 
 export class FoodImageAgent {
   private llm: ChatGoogleGenerativeAI;

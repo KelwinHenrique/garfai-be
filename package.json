@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.844.0",
     "@google/genai": "^1.9.0",
     "@langchain/core": "^0.3.62",
     "@langchain/google-genai": "^0.2.14",

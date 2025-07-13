@@ -2,7 +2,7 @@ import { Tool } from "@langchain/core/tools";
 import { z } from "zod";
 import { ToolOutput } from "../types/tool.type";
 import { GoogleGenAI, Modality } from "@google/genai";
-import { StorageService } from "../services/storage-service";
+import { StorageService } from "../services/storage.service";
 
 
 const ImageGenerationInputSchema = z.object({
