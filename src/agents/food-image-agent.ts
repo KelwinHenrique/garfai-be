@@ -8,6 +8,9 @@ import {
   AgentResponse, 
   ImageProcessingResult,
 } from "../types/agent.types";
+import { db } from "../config/database";
+import { imageProcessingJobs, EJobStatus } from "../schemas/imageProcessingJobs.schema";
+import { eq } from "drizzle-orm";
 
 export class FoodImageAgent {
   private llm: ChatGoogleGenerativeAI;
@@ -58,23 +61,42 @@ export class FoodImageAgent {
     });
   }
 
+  /**
+   * Process an image asynchronously
+   * 
+   * This method creates a job entry in the database and immediately returns
+   * while processing continues in the background
+   * 
+   * @param imageUrl - URL of the image to process
+   * @param itemId - ID of the item associated with this image
+   * @param options - Processing options
+   * @returns Promise with job ID and initial status
+   */
   async processImage(
-    imageUrl: string, 
+    imageUrl: string,
+    itemId: string,
     options = {}
-  ): Promise<AgentResponse<ImageProcessingResult>> {
+  ): Promise<AgentResponse<{ jobId: string }>> {
     const startTime = Date.now();
     
     try {
-      if (!this.agentExecutor) {
-        await this.initialize();
-      }
+      // Create a job entry in the database
+      const [job] = await db.insert(imageProcessingJobs).values({
+        itemId,
+        imageUrl,
+        status: EJobStatus.PROCESSING,
+        startedAt: new Date(),
+      }).returning({ id: imageProcessingJobs.id });
 
-      const input = this.buildImageProcessingPrompt(imageUrl, options);
-      const result = await this.agentExecutor!.invoke({ input });
-      console.log(result);
+      // Start processing in the background
+      this.processImageInBackground(job.id, imageUrl, options).catch(error => {
+        console.error(`Background processing failed for job ${job.id}:`, error);
+      });
 
+      // Return immediately with the job ID
       return {
         success: true,
+        data: { jobId: job.id },
         timestamp: new Date().toISOString(),
         executionTime: Date.now() - startTime
       };
@@ -85,6 +107,91 @@ export class FoodImageAgent {
         timestamp: new Date().toISOString(),
         executionTime: Date.now() - startTime
       };
+    }
+  }
+
+  /**
+   * Process image in the background and update job status when complete
+   * 
+   * @param jobId - ID of the job in the database
+   * @param imageUrl - URL of the image to process
+   * @param options - Processing options
+   */
+  private async processImageInBackground(
+    jobId: string,
+    imageUrl: string,
+    options = {}
+  ): Promise<void> {
+    try {
+      if (!this.agentExecutor) {
+        await this.initialize();
+      }
+
+      const input = this.buildImageProcessingPrompt(imageUrl, options);
+      const result = await this.agentExecutor!.invoke({ input });
+      
+      // Extract enhanced image URL and analysis result from the agent result
+      const enhancedImageUrl = this.extractEnhancedImageUrl(result);
+      
+      // Update job status to completed
+      await db.update(imageProcessingJobs)
+        .set({
+          status: EJobStatus.COMPLETED,
+          enhancedImageUrl,
+          analysisResult: result,
+          completedAt: new Date(),
+        })
+        .where(eq(imageProcessingJobs.id, jobId));
+        
+      console.log(`Job ${jobId} completed successfully`);
+    } catch (error) {
+      // Update job status to failed
+      await db.update(imageProcessingJobs)
+        .set({
+          status: EJobStatus.FAILED,
+          errorMessage: error instanceof Error ? error.message : "Unknown error",
+          completedAt: new Date(),
+        })
+        .where(eq(imageProcessingJobs.id, jobId));
+        
+      console.error(`Job ${jobId} failed:`, error);
+    }
+  }
+  
+  /**
+   * Extract enhanced image URL from agent result
+   * 
+   * @param result - Result from agent execution
+   * @returns URL of the enhanced image or undefined if not found
+   */
+  private extractEnhancedImageUrl(result: any): string | undefined {
+    try {
+      // Extract URL from the result based on your agent's output structure
+      // This is a placeholder - adjust based on your actual result structure
+      if (result.output && typeof result.output === 'string') {
+        // Try to find a URL in the output
+        const urlMatch = result.output.match(/https?:\/\/[^\s"']+\.(jpg|jpeg|png|gif|webp)/i);
+        if (urlMatch) {
+          return urlMatch[0];
+        }
+      }
+      
+      // Check if there's a tool output with an image URL
+      if (result.intermediateSteps && Array.isArray(result.intermediateSteps)) {
+        for (const step of result.intermediateSteps) {
+          if (step.observation && typeof step.observation === 'string') {
+            const urlMatch = step.observation.match(/https?:\/\/[^\s"']+\.(jpg|jpeg|png|gif|webp)/i);
+            if (urlMatch) {
+              return urlMatch[0];
+            }
+          }
+        }
+      }
+      
+      return undefined;
+    } catch (error) {
+      console.error('Error extracting enhanced image URL:', error);
+      return undefined;
     }
   }
 
