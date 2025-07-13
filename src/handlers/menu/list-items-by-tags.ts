@@ -6,10 +6,12 @@
 import { Request, Response } from 'express';
 import { ItemRepository } from '../../repositories/ItemRepository';
 import { EItemTags } from '../../types/IItem';
+import { EnvironmentRepository } from '../../repositories/EnvironmentRepository';
 import * as yup from 'yup';
 
 // Create an instance of the item repository
 const itemRepository = new ItemRepository();
+const environmentRepository = new EnvironmentRepository();
 
 /**
  * Validation schema for query parameters
@@ -53,6 +55,18 @@ export const listItemsByTagsHandler = async (req: Request, res: Response): Promi
       page,
       limit
     );
+
+    for (const item of result.items) {
+      const environment = await environmentRepository.findById(item.environmentId);
+      item.environmentData = {
+        id: environment?.id,
+        name: environment?.name,
+        description: environment?.description,
+        categoryName: environment?.categoryName,
+        preparationTime: environment?.preparationTime,
+        reputation: environment?.reputation,
+      };
+    }
     
     res.status(200).json({
       success: true,
