@@ -77,6 +77,7 @@ export interface TransformedItem {
   portionSizeTag: EPortionSize;
   dietaryRestrictions?: EDietaryRestriction[];
   dishClassifications?: EDishClassification[];
+  logoBase64?: string;
 }
 
 /**
