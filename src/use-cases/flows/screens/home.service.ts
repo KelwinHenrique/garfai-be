@@ -1,7 +1,7 @@
 
 import { getEnvironments } from '../../../use-cases/environments/get-environment';
 
-type ActionName = 'selectCategory'
+type ActionName = 'selectCategory' | 'search'
 
 interface ActionPayload {
   action: ActionName
@@ -69,8 +69,18 @@ const selectCategory = async (payload: any): Promise<any> => {
   }
 }
 
+const search = async (payload: any): Promise<any> => {
+  return {
+    screen: 'HOME_SCREEN',
+    data: {
+      error_message: 'Em desenvolvimento. Clique nas categorias para continuar.'
+    },
+  }
+}
+
 const actionsMap: Record<ActionName, ActionFunction> = {
   selectCategory,
+  search,
 }
 
 export const handleHomeScreenDataExchange = async (payload: ActionPayload) => {

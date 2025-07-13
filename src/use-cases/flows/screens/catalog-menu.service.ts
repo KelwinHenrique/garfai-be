@@ -163,7 +163,7 @@ const nextStep = async (payload: any): Promise<any> => {
     name: it.descriptionAtPurchase,
     quantity: it.quantity,
     amount: {
-      value: it.totalPriceForItemLine,
+      value: it.singlePriceForItemLine,
       offset: 100
     },
   }))
@@ -173,6 +173,8 @@ const nextStep = async (payload: any): Promise<any> => {
     data: {
       total: order?.subtotalAmount,
       pix: brCode,
+      orderId: order?.id,
+      clientId,
       paymentsItems,
       footerProps: {
         leftText: formatItemsQuantity(order?.items.length || 0),

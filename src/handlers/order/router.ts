@@ -12,6 +12,8 @@ import { updateOrderStatusHandler } from './update-order-status';
 import { listOrdersByStatusHandler } from './list-orders-by-status';
 import { validateApiKey } from '../../middlewares/api-key-middleware';
 import { validateClientId } from '../../middlewares/client-id-middleware';
+import { isAuthenticated } from '../../auth';
+import { getOrderByIdMerchantHandler } from './get-order-by-id-merchant';
 
 const router = Router();
 
@@ -38,7 +40,7 @@ router.get('/', validateApiKey, validateClientId, listClientOrdersHandler);
  * @access Private
  * @query {environmentId} - Required environment identifier
  */
-router.get('/by-status', validateApiKey, listOrdersByStatusHandler);
+router.get('/by-status', isAuthenticated, listOrdersByStatusHandler);
 
 /**
  * @route GET /api/orders/flows/:flowId
@@ -65,6 +67,13 @@ router.post('/:orderId/items', validateApiKey, validateClientId, addOrderItemHan
  * @header clientId - Required client identifier
  */
 router.put('/:orderId/status', validateApiKey, validateClientId, updateOrderStatusHandler);
+
+/**
+ * @route GET /api/orders/:id/merchant
+ * @description Get an order by ID for the merchant FE
+ * @access Private
+ */
+router.get('/:id/merchant', isAuthenticated, getOrderByIdMerchantHandler);
 
 /**
  * @route GET /api/orders/:id
