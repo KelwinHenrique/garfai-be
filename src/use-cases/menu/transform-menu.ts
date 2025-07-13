@@ -101,6 +101,87 @@ export interface TransformedMenuData {
 }
 
 /**
+ * Transform a single item to client shape
+ * 
+ * @param item - Full item data
+ * @returns Transformed item data or null if input is null
+ */
+export const transformItemToClientShape = (item: any | null): TransformedItem | null => {
+  if (!item) {
+    return null;
+  }
+
+  const transformedChoices: TransformedChoice[] = item.choices
+    ? item.choices.map((choice: any) => {
+        const transformedGarnishItems: TransformedGarnishItem[] =
+          choice.garnishItems
+            ? choice.garnishItems.map((garnish: any) => ({
+                id: garnish.id,
+                description: garnish.description,
+                logoBase64: garnish.logoUrl,
+                unitPrice: garnish.unitPrice,
+                details: garnish.details,
+                displayOrder: garnish.displayOrder,
+              }))
+            : [];
+        return {
+          id: choice.id,
+          name: choice.name,
+          min: choice.min,
+          max: choice.max,
+          garnishItems: transformedGarnishItems,
+          displayOrder: choice.displayOrder,
+        };
+      })
+    : [];
+
+  const productAislesArray = item.productAisles
+    ? item.productAisles.map((aisle: any) => aisle.aisleName)
+    : [];
+
+  return {
+    id: item.id,
+    description: item.description,
+    logoBase64: item.logoBase64,
+    details: item.details,
+    logoUrl: item.logoUrl,
+    needChoices: item.needChoices,
+    unitPrice: item.unitPrice,
+    unitMinPrice: item.unitMinPrice ? item.unitMinPrice : null,
+    unitOriginalPrice: item.unitOriginalPrice
+      ? item.unitOriginalPrice
+      : null,
+    productInfo: item.productInfo
+      ? {
+          id: item.productInfo.ifoodProductInfoId,
+          packaging: item.productInfo.packaging,
+          sequence: item.productInfo.sequence,
+          quantity: item.productInfo.quantity,
+          unit: item.productInfo.unit,
+          ean: item.productInfo.ean,
+        }
+      : undefined,
+    sellingOption: item.sellingOption
+      ? {
+          minimum: item.sellingOption.minimum,
+          incremental: item.sellingOption.incremental,
+          averageUnit: item.sellingOption.averageUnit,
+          availableUnits: item.sellingOption.availableUnits,
+        }
+      : undefined,
+    choices:
+      transformedChoices.length > 0 ? transformedChoices : undefined,
+    tags: item.promotionTags || undefined,
+    productAisles:
+      productAislesArray.length > 0 ? productAislesArray : undefined,
+    displayOrder: item.displayOrder,
+    portionSizeTag: item.portionSizeTag,
+    dietaryRestrictions: item.dietaryRestrictions || undefined,
+    dishClassifications: item.dishClassifications || undefined,
+  };
+};
+
+/**
  * Transform full menu to iFood shape
  * 
  * @param fullMenu - Full menu data

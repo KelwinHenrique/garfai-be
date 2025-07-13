@@ -6,6 +6,7 @@ import { importMenu } from './import-menu';
 import { getMenuByIdHandler } from './get-menu-by-id';
 import { getMenuHandler } from './get-menus';
 import { getMenuByEnvironmentIdHandler } from './get-menu-by-environment-id';
+import { getItemByIdHandler } from './get-item-by-id';
 
 const router = Router();
 
@@ -36,5 +37,12 @@ router.get('/:id', getMenuByIdHandler);
  * @access Private
  */
 router.get('/environment/:environmentId', getMenuByEnvironmentIdHandler);
+
+/**
+ * @route GET /menu/item/:id
+ * @desc Get an item by ID
+ * @access Private
+ */
+router.get('/item/:id', getItemByIdHandler);
 
 export default router;
