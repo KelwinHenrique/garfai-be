@@ -70,4 +70,30 @@ export class OrderRepository {
   async findByClientId(clientId: string): Promise<Order[]> {
     return db.select().from(orders).where(eq(orders.clientId, clientId)) as unknown as Promise<Order[]>;
   }
+
+  /**
+   * Update an order in the database
+   * 
+   * @param id - Order ID
+   * @param updateData - Data to update
+   * @param tx - Optional database transaction
+   * @returns The updated order
+   */
+  async update(id: string, updateData: Record<string, any>, tx?: PostgresJsDatabase): Promise<Order> {
+    const dbInstance = tx || db;
+    
+    // Always update the updatedAt timestamp
+    const dataToUpdate = {
+      ...updateData,
+      updatedAt: new Date()
+    };
+    
+    const [updatedOrder] = await dbInstance
+      .update(orders)
+      .set(dataToUpdate)
+      .where(eq(orders.id, id))
+      .returning();
+      
+    return updatedOrder as unknown as Order;
+  }
 }

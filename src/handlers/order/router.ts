@@ -8,6 +8,7 @@ import { getOrderByIdHandler } from './get-order-by-id';
 import { listClientOrdersHandler } from './list-client-orders';
 import { addOrderItemHandler } from './add-order-item';
 import { getOrderByFlowAndClientHandler } from './get-order-by-flow-and-client';
+import { updateOrderStatusHandler } from './update-order-status';
 import { validateApiKey } from '../../middlewares/api-key-middleware';
 import { validateClientId } from '../../middlewares/client-id-middleware';
 
@@ -54,5 +55,14 @@ router.post('/:orderId/items', validateApiKey, validateClientId, addOrderItemHan
  * @header clientId - Required client identifier
  */
 router.get('/flows/:flowId', validateApiKey, validateClientId, getOrderByFlowAndClientHandler);
+
+/**
+ * @route PUT /api/orders/:orderId/status
+ * @description Update the status of an order
+ * @access Private
+ * @body {status, cancellationReason?}
+ * @header clientId - Required client identifier
+ */
+router.put('/:orderId/status', validateApiKey, validateClientId, updateOrderStatusHandler);
 
 export default router;
