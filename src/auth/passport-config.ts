@@ -9,6 +9,14 @@ import { AUTH_CONFIG } from '../config/app-config';
 import { UserService } from '../services/user.service';
 import { findOrCreateUser } from '../use-cases/users';
 import { User as UserDrizzle } from '../schemas/users.schema';
+import { IncomingMessage } from 'http';
+
+// Define the User type that Passport expects
+declare global {
+  namespace Express {
+    interface User extends UserDrizzle {}
+  }
+}
 
 /**
  * User profile from Google OAuth
@@ -33,17 +41,16 @@ export interface GoogleUserProfile {
  */
 export const configurePassport = (): void => {
   // Serialize user to session
-  passport.serializeUser((user: UserDrizzle, done) => {
-    // Cast user to GoogleUserProfile to access id property
-    const userProfile = user;
-    done(null, userProfile.id);
+  passport.serializeUser((user: Express.User, done) => {
+    // We know user has an id property based on our UserDrizzle type
+    done(null, user.id);
   });
 
   // Deserialize user from session
   passport.deserializeUser(async (id: string, done) => {
     try {
       const user = await UserService.getUserById(id);
-      done(null, user);
+      done(null, user as Express.User);
     } catch (error) {
       done(error, null);
     }
@@ -74,7 +81,7 @@ export const configurePassport = (): void => {
 
           // Find or create user in database
           const user = await findOrCreateUser(userProfile);
-          return done(null, user);
+          return done(null, user as Express.User);
         } catch (error) {
           return done(error as Error, undefined);
         }
