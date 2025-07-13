@@ -15,6 +15,7 @@ import { getOrderByFlowAndClient } from '../../use-cases/order/get-order-by-flow
 export const getOrderByFlowAndClientHandler = async (req: Request, res: Response): Promise<void> => {
   try {
     const { flowId } = req.params;
+    const { environmentId } = req.body;
     const clientId = req.header('clientId') as string;
     
     if (!flowId) {
@@ -27,7 +28,7 @@ export const getOrderByFlowAndClientHandler = async (req: Request, res: Response
       return;
     }
     
-    const result = await getOrderByFlowAndClient(flowId, clientId);
+    const result = await getOrderByFlowAndClient(flowId, clientId, environmentId);
     
     if (!result) {
       const response: ApiResponse = {
