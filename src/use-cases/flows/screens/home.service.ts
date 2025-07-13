@@ -31,7 +31,7 @@ const mapEnvironmentsToRestaurants = (
     'on-click-action': {
       name: 'data_exchange',
       payload: {
-        type: 'selectRestaurant',
+        type: 'selectEnvironment',
         selectedRestaurant: it.id,
         selectedAddress,
       },
@@ -53,7 +53,6 @@ const selectCategory = async (payload: any): Promise<any> => {
       environments,
       payload.data.selectedAddress,
     )
-
     return {
       screen: 'ENVIRONMENT_LIST',
       data: {

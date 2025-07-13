@@ -1,10 +1,12 @@
 import { handleHomeScreenDataExchange } from './screens/home.service'
+import { handleEnvironmentListScreenDataExchange } from './screens/environment-list.service'
 
 
 type ActionName = 'ping' | 'INIT' | 'data_exchange' | 'BACK'
 
 type ScreenName =
   | 'HOME_SCREEN'
+  | 'ENVIRONMENT_LIST'
 
 interface ActionPayload {
   action: ActionName
@@ -28,7 +30,8 @@ const ping = async (payload: any): Promise<any> => {
 }
 
 const screenMap: Record<ScreenName, ActionFunction> = {
-  HOME_SCREEN: handleHomeScreenDataExchange
+  HOME_SCREEN: handleHomeScreenDataExchange,
+  ENVIRONMENT_LIST: handleEnvironmentListScreenDataExchange,
 }
 
 const dataExchange = async (payload: DataExchangePayload): Promise<any> => {
