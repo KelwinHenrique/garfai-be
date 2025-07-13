@@ -18,7 +18,7 @@ const querySchema = yup.object({
   environmentId: yup.string().uuid().required(),
   tags: yup.string().required(),
   page: yup.number().integer().min(1).default(1),
-  limit: yup.number().integer().min(1).max(100).default(20)
+  limit: yup.number().integer().min(1).max(100).default(100)
 });
 
 /**

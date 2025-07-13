@@ -81,14 +81,9 @@ export class ItemRepository {
         .where(eq(garnishItems.choiceId, choice.id))
         .orderBy(asc(garnishItems.displayOrder));
 
-      // Remove logoBase64 from garnish items
-      const garnishItemsWithoutLogo: any[] = garnishItemsResult.map(
-        ({ logoBase64, ...rest }) => rest
-      );
-
       choicesWithGarnishItems.push({
         ...choice,
-        garnishItems: garnishItemsWithoutLogo,
+        garnishItems: garnishItemsResult,
       });
     }
 
