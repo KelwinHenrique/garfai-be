@@ -80,7 +80,6 @@ export class ItemRepository {
         .from(garnishItems)
         .where(eq(garnishItems.choiceId, choice.id))
         .orderBy(asc(garnishItems.displayOrder));
-
       choicesWithGarnishItems.push({
         ...choice,
         garnishItems: garnishItemsResult,

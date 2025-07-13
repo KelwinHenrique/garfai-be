@@ -118,7 +118,8 @@ export const transformItemToClientShape = (item: any | null): TransformedItem | 
             ? choice.garnishItems.map((garnish: any) => ({
                 id: garnish.id,
                 description: garnish.description,
-                logoBase64: garnish.logoUrl,
+                logoBase64: garnish.logoBase64,
+                logoUrl: garnish.logoUrl,
                 unitPrice: garnish.unitPrice,
                 details: garnish.details,
                 displayOrder: garnish.displayOrder,
