@@ -13,7 +13,7 @@ dotenv.config();
  */
 export const SERVER_CONFIG = {
   /** Port the server will listen on */
-  PORT: process.env.PORT || 3000,
+  PORT: process.env.PORT || 4000,
   /** Node environment */
   NODE_ENV: process.env.NODE_ENV || 'development',
 };
@@ -35,7 +35,7 @@ export const AUTH_CONFIG = {
     /** Google OAuth client secret */
     CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || '',
     /** Google OAuth callback URL */
-    CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/auth/google/callback',
+    CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:4000/auth/google/callback',
   },
   /** API key configuration for public endpoints */
   API_KEYS: process.env.API_KEYS ? process.env.API_KEYS.split(',') : ['default-dev-api-key'],

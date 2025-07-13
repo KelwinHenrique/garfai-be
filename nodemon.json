@@ -3,8 +3,5 @@
   "ext": "ts,json",
   "ignore": ["src/**/*.spec.ts"],
   "exec": "ts-node src/index.ts",
-  "events": {
-    "restart": "kill-port 3000"
-  },
   "delay": 1000
 }
