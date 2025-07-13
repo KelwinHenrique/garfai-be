@@ -33,7 +33,9 @@ type ListOrdersByStatusInput = yup.InferType<typeof listOrdersByStatusSchema>;
 export const listOrdersByStatusHandler = async (req: Request, res: Response): Promise<void> => {
   try {
     // Extract and validate query parameters
-    const { environmentId } = await listOrdersByStatusSchema.validate(req.query);
+    // const { environmentId } = await listOrdersByStatusSchema.validate(req.query);
+
+    const environmentId = req.headers.environmentid as string;
     
     // Initialize repositories
     const orderRepository = new OrderRepository();
