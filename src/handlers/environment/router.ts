@@ -8,6 +8,7 @@ import { createEnvironmentHandler } from './create-environment';
 import { getEnvironmentsHandler } from './get-environments';
 import { getEnvironmentByIdHandler } from './get-environments-by-id';
 import { updateEnvironmentHandler } from './update-environments';
+import { importEnvironmentHandler } from './import-environment';
 import { isAuthenticated } from '../../auth/auth-middleware';
 
 /**
@@ -23,6 +24,7 @@ export const environmentRouter = (): Router => {
   router.get('/', getEnvironmentsHandler);
   router.get('/:id', getEnvironmentByIdHandler);
   router.put('/:id', isAuthenticated, updateEnvironmentHandler);
+  router.post('/import', importEnvironmentHandler);
   
   return router;
 };
