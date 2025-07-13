@@ -4,7 +4,7 @@
 
 import { Request, Response } from 'express';
 import { ApiResponse } from '../../models';
-import { getMenuByEnvironmentId } from '../../use-cases/menu/get-menu-by-environment-id';
+import { getMenuById } from '../../use-cases/menu/get-menu-by-id';
 import { TransformedMenuData } from '../../use-cases/menu/transform-menu';
 
 /**
@@ -13,10 +13,10 @@ import { TransformedMenuData } from '../../use-cases/menu/transform-menu';
  * @param req - Express request object
  * @param res - Express response object
  */
-export const getMenuByEnvironmentIdHandler = async (req: Request, res: Response): Promise<void> => {
+export const getMenuByIdHandler = async (req: Request, res: Response): Promise<void> => {
   try {
-    const environmentId = req.params.environmentId;
-    const transformedMenu = await getMenuByEnvironmentId(environmentId) as TransformedMenuData | null;
+    const menuId = req.params.id;
+    const transformedMenu = await getMenuById(menuId) as TransformedMenuData | null;
     
     if (!transformedMenu) {
       const response: ApiResponse = {
