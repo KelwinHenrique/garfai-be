@@ -74,6 +74,8 @@ export async function addOrderItem(orderId: string, itemData: IAddItemBody, clie
     
     const createdOrderItem = await orderItemRepository.create(orderItemData, tx);
     
+    const orderAmount = await orderRepository.updateAmount(orderId, order.subtotalAmount + (itemData.quantity * menuItem.unitPrice), tx);
+    
     // Process choices if provided
     if (itemData.choices && itemData.choices.length > 0) {
       for (const choiceData of itemData.choices) {

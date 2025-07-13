@@ -96,4 +96,19 @@ export class OrderRepository {
       
     return updatedOrder as unknown as Order;
   }
+
+  async updateAmount(id: string, amount: number, tx?: PostgresJsDatabase): Promise<Order> {
+    const dbInstance = tx || db;
+    
+    const [updatedOrder] = await dbInstance
+      .update(orders)
+      .set({
+        subtotalAmount: amount,
+        updatedAt: new Date()
+      })
+      .where(eq(orders.id, id))
+      .returning();
+      
+    return updatedOrder as unknown as Order;
+  }
 }
