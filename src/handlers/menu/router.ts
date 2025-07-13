@@ -8,6 +8,7 @@ import { getMenuHandler } from './get-menus';
 import { getMenuByEnvironmentIdHandler } from './get-menu-by-environment-id';
 import { getItemByIdHandler } from './get-item-by-id';
 import { listItemsByTagsHandler } from './list-items-by-tags';
+import { updateItemImageHandler } from './update-item-image';
 
 const router = Router();
 
@@ -52,5 +53,12 @@ router.get('/item/:id', getItemByIdHandler);
  * @access Private
  */
 router.get('/items/by-tags', listItemsByTagsHandler);
+
+/**
+ * @route PUT /menu/item/:id/image
+ * @desc Update an item's image (logoUrl and logoBase64)
+ * @access Private
+ */
+router.put('/item/:id/image', updateItemImageHandler);
 
 export default router;

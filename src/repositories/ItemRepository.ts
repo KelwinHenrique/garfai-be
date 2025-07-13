@@ -126,6 +126,23 @@ export class ItemRepository {
   }
 
   /**
+   * Update an item's image (logoUrl and logoBase64)
+   *
+   * @param itemId - Item ID
+   * @param logoUrl - URL of the image
+   * @param logoBase64 - Base64 representation of the image
+   * @returns The updated item
+   */
+  async updateItemImage(itemId: string, logoUrl: string, logoBase64: string) {
+    const result = await db
+      .update(items)
+      .set({ logoUrl, logoBase64 })
+      .where(eq(items.id, itemId))
+      .returning();
+    return result.length > 0 ? result[0] : null;
+  }
+
+  /**
    * Find items by tags with pagination
    *
    * @param environmentId - Environment ID
