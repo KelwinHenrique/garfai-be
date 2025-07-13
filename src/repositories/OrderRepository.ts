@@ -70,6 +70,16 @@ export class OrderRepository {
   async findByClientId(clientId: string): Promise<Order[]> {
     return db.select().from(orders).where(eq(orders.clientId, clientId)) as unknown as Promise<Order[]>;
   }
+  
+  /**
+   * Get orders by environment ID from the database
+   * 
+   * @param environmentId - Environment ID
+   * @returns Array of orders
+   */
+  async findByEnvironmentId(environmentId: string): Promise<Order[]> {
+    return db.select().from(orders).where(eq(orders.environmentId, environmentId)) as unknown as Promise<Order[]>;
+  }
 
   /**
    * Update an order in the database
