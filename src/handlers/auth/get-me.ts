@@ -24,8 +24,6 @@ export const handleGetMe = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
-    console.log('req.user', req.user);
-
     // Remove sensitive information before sending response
     const { password, ...userInfo } = req.user;
 
