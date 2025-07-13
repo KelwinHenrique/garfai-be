@@ -11,6 +11,7 @@ import { OrderRepository } from '../../repositories/OrderRepository';
 import { OrderItemRepository } from '../../repositories/OrderItemRepository';
 import { OrderChoiceRepository } from '../../repositories/OrderChoiceRepository';
 import { OrderGarnishItemRepository } from '../../repositories/OrderGarnishItemRepository';
+import { ClientRepository } from '../../repositories/ClientRepository';
 
 /**
  * Input validation schema
@@ -42,6 +43,7 @@ export const listOrdersByStatusHandler = async (req: Request, res: Response): Pr
     const orderItemRepository = new OrderItemRepository();
     const orderChoiceRepository = new OrderChoiceRepository();
     const orderGarnishItemRepository = new OrderGarnishItemRepository();
+    const clientRepository = new ClientRepository();
     
     // Get all orders for the environment
     const orders = await orderRepository.findByEnvironmentId(environmentId);
@@ -54,6 +56,9 @@ export const listOrdersByStatusHandler = async (req: Request, res: Response): Pr
     
     // Process each order to include its items and choices
     for (const order of orders) {
+      // Get client data for this order
+      const client = await clientRepository.findById(order.clientId);
+
       // Get order items for this order
       const orderItems = await orderItemRepository.findByOrderId(order.id);
       
@@ -76,9 +81,10 @@ export const listOrdersByStatusHandler = async (req: Request, res: Response): Pr
         };
       }));
       
-      // Add the order with its items to the appropriate status group
+      // Add the order with its items and client data to the appropriate status group
       ordersByStatus[order.status].push({
         ...order,
+        client,
         items: itemsWithDetails
       });
     }
