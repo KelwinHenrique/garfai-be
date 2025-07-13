@@ -7,6 +7,7 @@ import { createOrderHandler } from './create-order';
 import { getOrderByIdHandler } from './get-order-by-id';
 import { listClientOrdersHandler } from './list-client-orders';
 import { addOrderItemHandler } from './add-order-item';
+import { getOrderByFlowAndClientHandler } from './get-order-by-flow-and-client';
 import { validateApiKey } from '../../middlewares/api-key-middleware';
 import { validateClientId } from '../../middlewares/client-id-middleware';
 
@@ -45,5 +46,13 @@ router.get('/', validateApiKey, validateClientId, listClientOrdersHandler);
  * @header clientId - Required client identifier
  */
 router.post('/:orderId/items', validateApiKey, validateClientId, addOrderItemHandler);
+
+/**
+ * @route GET /api/orders/flow/:flowId
+ * @description Get an order with its items by flow ID and client ID
+ * @access Private
+ * @header clientId - Required client identifier
+ */
+router.get('/flows/:flowId', validateApiKey, validateClientId, getOrderByFlowAndClientHandler);
 
 export default router;
