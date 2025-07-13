@@ -108,4 +108,24 @@ export class ItemRepository {
 
     return fullItem;
   }
+
+  async findItemsByMenuCategoryIdAndEnvironmentIdRepository(
+    environmentId: string,
+    menuCategoryId: string,
+  ) {
+    const result = await db
+      .select()
+      .from(items)
+      .where(and(eq(items.menuCategoryId, menuCategoryId), eq(items.environmentId, environmentId)));
+    return result;
+  }
+
+  async updateItemTagsRepository(tags: string[], itemId: string) {
+    const result = await db
+      .update(items)
+      .set({ tags })
+      .where(eq(items.id, itemId))
+      .returning();
+    return result;
+  }
 }

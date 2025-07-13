@@ -24,6 +24,7 @@ import { NewChoice } from "../../schemas/choices.schema";
 import { ChoiceRepository } from "../../repositories/ChoiceRepository";
 import { GarnishItemRepository } from "../../repositories/GarnishItemRepository";
 import { NewGarnishItem } from "../../schemas/garnishItems.schema";
+import { autoTagMenuItemsService } from "../../services/autoTagMenuItemsService.service";
 
 const mapIFoodTagsToNewFields = (
   productTags: IFoodProductTagItem[] | null | undefined
@@ -348,5 +349,7 @@ const createMenuCategoryAndItems = async (
         }
       }
     }
+
+    await autoTagMenuItemsService(createdMenuCategory.id, environmentId);
   }
 };
